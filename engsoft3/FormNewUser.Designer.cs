@@ -37,6 +37,7 @@
             this.txtUserPass = new System.Windows.Forms.TextBox();
             this.txtUserMail = new System.Windows.Forms.TextBox();
             this.numUserAge = new System.Windows.Forms.NumericUpDown();
+            this.label5 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.numUserAge)).BeginInit();
             this.SuspendLayout();
             // 
@@ -97,6 +98,7 @@
             // 
             this.txtUserPass.Location = new System.Drawing.Point(149, 77);
             this.txtUserPass.Name = "txtUserPass";
+            this.txtUserPass.PasswordChar = '*';
             this.txtUserPass.Size = new System.Drawing.Size(100, 20);
             this.txtUserPass.TabIndex = 6;
             // 
@@ -114,11 +116,21 @@
             this.numUserAge.Size = new System.Drawing.Size(100, 20);
             this.numUserAge.TabIndex = 9;
             // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(40, 19);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(162, 13);
+            this.label5.TabIndex = 10;
+            this.label5.Text = "Digite os dados do novo usuário:";
+            // 
             // FormNewUser
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(288, 261);
+            this.ClientSize = new System.Drawing.Size(288, 223);
+            this.Controls.Add(this.label5);
             this.Controls.Add(this.numUserAge);
             this.Controls.Add(this.txtUserMail);
             this.Controls.Add(this.txtUserPass);
@@ -148,5 +160,6 @@
         private System.Windows.Forms.TextBox txtUserPass;
         private System.Windows.Forms.TextBox txtUserMail;
         private System.Windows.Forms.NumericUpDown numUserAge;
+        private System.Windows.Forms.Label label5;
     }
 }

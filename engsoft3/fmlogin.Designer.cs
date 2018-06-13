@@ -34,7 +34,6 @@
             this.txtuser = new System.Windows.Forms.TextBox();
             this.performanceCounter1 = new System.Diagnostics.PerformanceCounter();
             this.btnNewUser = new System.Windows.Forms.Button();
-            ((System.ComponentModel.ISupportInitialize)(this.performanceCounter1)).BeginInit();
             this.SuspendLayout();
             // 
             // btnlogin
@@ -51,6 +50,7 @@
             // 
             this.txtpass.Location = new System.Drawing.Point(27, 74);
             this.txtpass.Name = "txtpass";
+            this.txtpass.PasswordChar = '*';
             this.txtpass.Size = new System.Drawing.Size(100, 20);
             this.txtpass.TabIndex = 1;
             // 
@@ -92,7 +92,6 @@
             this.Controls.Add(this.btnlogin);
             this.Name = "fmlogin";
             this.Text = "fmlogin";
-            ((System.ComponentModel.ISupportInitialize)(this.performanceCounter1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 

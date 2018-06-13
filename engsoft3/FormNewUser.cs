@@ -65,6 +65,7 @@ namespace engsoft3
                 db.SaveChanges();
 
                 MessageBox.Show("Novo usuário cadastrado com sucesso!");
+                this.Close();
             }
         }
     }
