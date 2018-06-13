@@ -36,5 +36,11 @@ namespace engsoft3
                 }
             }
         }
+
+        private void btnNewUser_Click(object sender, EventArgs e)
+        {
+            FormNewUser f = new FormNewUser();
+            f.ShowDialog(); // Shows Form New User
+        }
     }
 }

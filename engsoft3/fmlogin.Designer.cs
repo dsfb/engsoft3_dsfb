@@ -78,6 +78,7 @@
             this.btnNewUser.TabIndex = 4;
             this.btnNewUser.Text = "Novo usuário";
             this.btnNewUser.UseVisualStyleBackColor = true;
+            this.btnNewUser.Click += new System.EventHandler(this.btnNewUser_Click);
             // 
             // fmlogin
             // 
