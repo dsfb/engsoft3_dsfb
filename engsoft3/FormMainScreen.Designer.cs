@@ -42,6 +42,7 @@
             this.btnCreateGame.TabIndex = 0;
             this.btnCreateGame.Text = "Criar Jogo";
             this.btnCreateGame.UseVisualStyleBackColor = true;
+            this.btnCreateGame.Click += new System.EventHandler(this.btnCreateGame_Click);
             // 
             // btnRankings
             // 
@@ -51,6 +52,7 @@
             this.btnRankings.TabIndex = 1;
             this.btnRankings.Text = "Rankings";
             this.btnRankings.UseVisualStyleBackColor = true;
+            this.btnRankings.Click += new System.EventHandler(this.btnRankings_Click);
             // 
             // btnFindGame
             // 
@@ -80,7 +82,7 @@
             this.Controls.Add(this.btnRankings);
             this.Controls.Add(this.btnCreateGame);
             this.Name = "FormMainScreen";
-            this.Text = "FormMainScreen";
+            this.Text = "Tela Principal do Jogo";
             this.ResumeLayout(false);
 
         }

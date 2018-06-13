@@ -89,11 +89,23 @@
     <Compile Include="FormMainScreen.Designer.cs">
       <DependentUpon>FormMainScreen.cs</DependentUpon>
     </Compile>
+    <Compile Include="FormNewGame.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormNewGame.Designer.cs">
+      <DependentUpon>FormNewGame.cs</DependentUpon>
+    </Compile>
     <Compile Include="FormNewUser.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="FormNewUser.Designer.cs">
       <DependentUpon>FormNewUser.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormRanking.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormRanking.Designer.cs">
+      <DependentUpon>FormRanking.cs</DependentUpon>
     </Compile>
     <Compile Include="img_fundo_tab.cs">
       <DependentUpon>DominoModel.tt</DependentUpon>
@@ -113,6 +125,7 @@
     <Compile Include="ranking.cs">
       <DependentUpon>DominoModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="requisicoes_ws\RequisicoesRestWS.cs" />
     <Compile Include="TileLogic.cs" />
     <Compile Include="TileDataCreator.cs" />
     <Compile Include="TileDataStorage.cs" />
@@ -141,8 +154,14 @@
     <EmbeddedResource Include="FormMainScreen.resx">
       <DependentUpon>FormMainScreen.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="FormNewGame.resx">
+      <DependentUpon>FormNewGame.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FormNewUser.resx">
       <DependentUpon>FormNewUser.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormRanking.resx">
+      <DependentUpon>FormRanking.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

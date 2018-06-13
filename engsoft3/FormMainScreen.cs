@@ -12,9 +12,23 @@ namespace engsoft3
 {
     public partial class FormMainScreen : Form
     {
-        public FormMainScreen()
+        private string idPlayer;
+        public FormMainScreen(string idPlayer)
         {
             InitializeComponent();
+            this.idPlayer = idPlayer;
+        }
+
+        private void btnRankings_Click(object sender, EventArgs e)
+        {
+            FormRanking fr = new FormRanking();
+            fr.ShowDialog();
+        }
+
+        private void btnCreateGame_Click(object sender, EventArgs e)
+        {
+            FormNewGame fng = new FormNewGame(this.idPlayer);
+            fng.ShowDialog();
         }
     }
 }
