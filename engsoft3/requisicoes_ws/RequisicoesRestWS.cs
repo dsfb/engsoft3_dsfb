@@ -10,6 +10,19 @@ namespace engsoft3.requisicoes_ws
 {
     public class RequisicoesRestWS
     {
+        public static string BuildString(string url, List<string> list)
+        {
+            StringBuilder sb = new StringBuilder(url);
+
+            // Loop through List with foreach.
+            foreach (string str in list)
+            {
+                sb.Append(str);
+            }
+
+            return sb.ToString();
+        }
+
         public static string ObterRequisicao(string url)
         {
             try
