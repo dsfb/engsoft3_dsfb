@@ -34,6 +34,8 @@
             this.btnCancelar = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.ColunaNome = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ColunaEmail = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -85,10 +87,25 @@
             // dataGridView1
             // 
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.ColunaNome,
+            this.ColunaEmail});
             this.dataGridView1.Location = new System.Drawing.Point(32, 139);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.Size = new System.Drawing.Size(212, 150);
             this.dataGridView1.TabIndex = 6;
+            // 
+            // ColunaNome
+            // 
+            this.ColunaNome.HeaderText = "Nome";
+            this.ColunaNome.Name = "ColunaNome";
+            this.ColunaNome.ReadOnly = true;
+            // 
+            // ColunaEmail
+            // 
+            this.ColunaEmail.HeaderText = "E-mail";
+            this.ColunaEmail.Name = "ColunaEmail";
+            this.ColunaEmail.ReadOnly = true;
             // 
             // FormNewGame
             // 
@@ -116,5 +133,7 @@
         private System.Windows.Forms.Button btnCancelar;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.DataGridView dataGridView1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ColunaNome;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ColunaEmail;
     }
 }

@@ -5,19 +5,20 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace engsoft3.requisicoes_ws
 {
     public class RequisicoesRestWS
     {
-        public static string BuildString(string url, List<string> list)
+        public static string ObterRequisicao(string url, List<string> list)
         {
             StringBuilder sb = new StringBuilder(url);
 
             // Loop through List with foreach.
             foreach (string str in list)
             {
-                sb.Append(str);
+                sb.Append("/").Append(str);
             }
 
             return sb.ToString();
@@ -42,6 +43,25 @@ namespace engsoft3.requisicoes_ws
             {
                 throw new System.Exception($"Erro ao tentar fazer a requisição: {ex.Message}");
             }
+        }
+
+        public static string custodiaRequisicao(string url)
+        {
+            int tentativas = 0;
+            while (tentativas < 5)
+            {
+                try
+                {
+                    return RequisicoesRestWS.ObterRequisicao("https://agora-vai.herokuapp.com/domino/connect");
+                }
+                catch (System.Exception ex)
+                {
+                    tentativas++;
+                }
+            }
+
+            MessageBox.Show("Falha ao conectar-se com o WS!");
+            return "";
         }
     }
 }
