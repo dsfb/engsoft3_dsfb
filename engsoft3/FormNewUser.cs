@@ -50,6 +50,12 @@ namespace engsoft3
                 return;
             }
 
+            if (Decimal.ToInt32(numUserAge.Value) == 0)
+            {
+                MessageBox.Show("Dado de Idade de Usuário é inválido!");
+                return;
+            }
+
             using (var db = new dominoeng3Entities())
             {
                 var players = db.Set<player>();
