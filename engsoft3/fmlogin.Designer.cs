@@ -33,6 +33,7 @@
             this.label1 = new System.Windows.Forms.Label();
             this.txtuser = new System.Windows.Forms.TextBox();
             this.performanceCounter1 = new System.Diagnostics.PerformanceCounter();
+            this.btnNewUser = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.performanceCounter1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -40,7 +41,7 @@
             // 
             this.btnlogin.Location = new System.Drawing.Point(27, 111);
             this.btnlogin.Name = "btnlogin";
-            this.btnlogin.Size = new System.Drawing.Size(75, 23);
+            this.btnlogin.Size = new System.Drawing.Size(100, 23);
             this.btnlogin.TabIndex = 0;
             this.btnlogin.Text = "Login";
             this.btnlogin.UseVisualStyleBackColor = true;
@@ -69,18 +70,28 @@
             this.txtuser.Size = new System.Drawing.Size(100, 20);
             this.txtuser.TabIndex = 3;
             // 
+            // btnNewUser
+            // 
+            this.btnNewUser.Location = new System.Drawing.Point(27, 154);
+            this.btnNewUser.Name = "btnNewUser";
+            this.btnNewUser.Size = new System.Drawing.Size(100, 23);
+            this.btnNewUser.TabIndex = 4;
+            this.btnNewUser.Text = "Novo usuário";
+            this.btnNewUser.UseVisualStyleBackColor = true;
+            // 
             // fmlogin
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(230, 149);
+            this.ClientSize = new System.Drawing.Size(180, 198);
+            this.Controls.Add(this.btnNewUser);
             this.Controls.Add(this.txtuser);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.txtpass);
             this.Controls.Add(this.btnlogin);
             this.Name = "fmlogin";
             this.Text = "fmlogin";
-           
+            ((System.ComponentModel.ISupportInitialize)(this.performanceCounter1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -93,6 +104,7 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox txtuser;
         private System.Diagnostics.PerformanceCounter performanceCounter1;
+        private System.Windows.Forms.Button btnNewUser;
     }
 }
 

@@ -32,8 +32,19 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -45,6 +56,57 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="administradore.cs">
+      <DependentUpon>DominoModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ClienteHandler.cs" />
+    <Compile Include="conj_img_pecas.cs">
+      <DependentUpon>DominoModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataSet1.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DataSet1.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="DominoModel.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DominoModel.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DominoModel.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DominoModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DominoModel.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DominoModel.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="FormNewUser.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormNewUser.Designer.cs">
+      <DependentUpon>FormNewUser.cs</DependentUpon>
+    </Compile>
+    <Compile Include="img_fundo_tab.cs">
+      <DependentUpon>DominoModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="img_peca.cs">
+      <DependentUpon>DominoModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="partida.cs">
+      <DependentUpon>DominoModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="peca.cs">
+      <DependentUpon>DominoModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="player.cs">
+      <DependentUpon>DominoModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ranking.cs">
+      <DependentUpon>DominoModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="TileLogic.cs" />
     <Compile Include="TileDataCreator.cs" />
     <Compile Include="TileDataStorage.cs" />
@@ -70,6 +132,9 @@
     <EmbeddedResource Include="fmlogin.resx">
       <DependentUpon>fmlogin.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="FormNewUser.resx">
+      <DependentUpon>FormNewUser.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -79,6 +144,25 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <None Include="DataSet1.xsc">
+      <DependentUpon>DataSet1.xsd</DependentUpon>
+    </None>
+    <None Include="DataSet1.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>DataSet1.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="DataSet1.xss">
+      <DependentUpon>DataSet1.xsd</DependentUpon>
+    </None>
+    <EntityDeploy Include="DominoModel.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>DominoModel.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="DominoModel.edmx.diagram">
+      <DependentUpon>DominoModel.edmx</DependentUpon>
+    </None>
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -93,6 +177,16 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="DominoModel.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>DominoModel.edmx</DependentUpon>
+      <LastGenOutput>DominoModel.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="DominoModel.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>DominoModel.edmx</DependentUpon>
+      <LastGenOutput>DominoModel.cs</LastGenOutput>
+    </Content>
     <Content Include="dominopecas\0p0.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -180,6 +274,9 @@
     <Content Include="dominopecas\board.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

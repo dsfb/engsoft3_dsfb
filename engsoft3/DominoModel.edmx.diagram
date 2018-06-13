@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="c000eed7a104495197757e040a17dc5e" Name="Diagram1">
+        <EntityTypeShape EntityType="dominoeng3Model.administradore" Width="1.5" PointX="5.75" PointY="4.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="dominoeng3Model.conj_img_pecas" Width="1.5" PointX="5.75" PointY="1.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="dominoeng3Model.img_fundo_tab" Width="1.5" PointX="0.75" PointY="6.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="dominoeng3Model.img_peca" Width="1.5" PointX="8" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="dominoeng3Model.partida" Width="1.5" PointX="3" PointY="1.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="dominoeng3Model.peca" Width="1.5" PointX="2.75" PointY="6.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="dominoeng3Model.player" Width="1.5" PointX="0.75" PointY="2.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="dominoeng3Model.ranking" Width="1.5" PointX="3" PointY="4" IsExpanded="true" />
+        <AssociationConnector Association="dominoeng3Model.FK_img_peca_conj_img_pecas" ManuallyRouted="false" />
+        <AssociationConnector Association="dominoeng3Model.FK__partida__player1__276EDEB3" ManuallyRouted="false" />
+        <AssociationConnector Association="dominoeng3Model.FK__partida__player2__286302EC" ManuallyRouted="false" />
+        <AssociationConnector Association="dominoeng3Model.FK__ranking__player__2B3F6F97" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

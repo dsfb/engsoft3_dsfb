@@ -19,20 +19,21 @@ namespace engsoft3
 
         private void btnlogin_Click(object sender, EventArgs e)
         {
-            //Isso vai no banco
-            txtpass.Text = "admin";
-            txtuser.Text = "admin";
-            if (txtpass.Text != "admin" && txtuser.Text != "admin")
+            using (var db = new dominoeng3Entities())
             {
-                MessageBox.Show("Wrong!");
-                
-            }
-            else
-            {
-                fmdomino m1 = new fmdomino();
-                m1.ShowDialog();
-                this.Close();
-                
+                var query = from u in db.players
+                            where u.Nome == txtuser.Text && u.Senha == txtpass.Text
+                            select u;
+
+                if (query.Count() == 1)
+                {
+                    fmdomino m1 = new fmdomino();
+                    m1.ShowDialog();
+                    this.Close();
+                } else
+                {
+                    MessageBox.Show("Wrong!");
+                }
             }
         }
     }

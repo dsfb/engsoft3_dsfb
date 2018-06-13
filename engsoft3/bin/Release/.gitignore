@@ -1,3 +1,10 @@
 /engsoft3.exe
 /engsoft3.exe.config
 /engsoft3.pdb
+/EntityFramework.SqlServer.dll
+/EntityFramework.SqlServer.xml
+/EntityFramework.dll
+/EntityFramework.xml
+/engsoft3.vshost.exe
+/engsoft3.vshost.exe.config
+/engsoft3.vshost.exe.manifest

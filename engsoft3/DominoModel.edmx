@@ -1,0 +1,422 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="dominoeng3Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="administradores">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nome" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="Senha" Type="varchar" MaxLength="25" Nullable="false" />
+          <Property Name="Email" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="conj_img_pecas">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="nome_conjunto" Type="varchar" MaxLength="64" Nullable="false" />
+        </EntityType>
+        <EntityType Name="img_fundo_tab">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="nome_fundo" Type="varchar(max)" Nullable="false" />
+          <Property Name="conteudo_arquivo" Type="varbinary(max)" Nullable="false" />
+          <Property Name="nome_arquivo" Type="varchar(max)" Nullable="false" />
+        </EntityType>
+        <EntityType Name="img_peca">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="id_conjunto_pecas" Type="int" Nullable="false" />
+          <Property Name="conteudo_arquivo" Type="varbinary(max)" Nullable="false" />
+          <Property Name="peca_num_cima" Type="smallint" Nullable="false" />
+          <Property Name="peca_num_abaixo" Type="smallint" Nullable="false" />
+          <Property Name="nome_arquivo" Type="varchar(max)" Nullable="false" />
+        </EntityType>
+        <EntityType Name="partida">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="player1" Type="int" Nullable="false" />
+          <Property Name="player2" Type="int" Nullable="false" />
+          <Property Name="resultado" Type="varchar" MaxLength="10" />
+        </EntityType>
+        <EntityType Name="peca">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="p_up" Type="int" Nullable="false" />
+          <Property Name="p_down" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="player">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nome" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="Senha" Type="varchar" MaxLength="25" Nullable="false" />
+          <Property Name="Email" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Idade" Type="int" />
+        </EntityType>
+        <EntityType Name="ranking">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ranking" Type="int" Nullable="false" />
+          <Property Name="player" Type="int" Nullable="false" />
+          <Property Name="partidas_jogadas" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="FK__partida__player1__276EDEB3">
+          <End Role="player" Type="Self.player" Multiplicity="1" />
+          <End Role="partida" Type="Self.partida" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="player">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="partida">
+              <PropertyRef Name="player1" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__partida__player2__286302EC">
+          <End Role="player" Type="Self.player" Multiplicity="1" />
+          <End Role="partida" Type="Self.partida" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="player">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="partida">
+              <PropertyRef Name="player2" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ranking__player__2B3F6F97">
+          <End Role="player" Type="Self.player" Multiplicity="1" />
+          <End Role="ranking" Type="Self.ranking" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="player">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="ranking">
+              <PropertyRef Name="player" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_img_peca_conj_img_pecas">
+          <End Role="conj_img_pecas" Type="Self.conj_img_pecas" Multiplicity="1" />
+          <End Role="img_peca" Type="Self.img_peca" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="conj_img_pecas">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="img_peca">
+              <PropertyRef Name="id_conjunto_pecas" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="dominoeng3ModelStoreContainer">
+          <EntitySet Name="administradores" EntityType="Self.administradores" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="conj_img_pecas" EntityType="Self.conj_img_pecas" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="img_fundo_tab" EntityType="Self.img_fundo_tab" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="img_peca" EntityType="Self.img_peca" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="partida" EntityType="Self.partida" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="peca" EntityType="Self.peca" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="player" EntityType="Self.player" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ranking" EntityType="Self.ranking" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__partida__player1__276EDEB3" Association="Self.FK__partida__player1__276EDEB3">
+            <End Role="player" EntitySet="player" />
+            <End Role="partida" EntitySet="partida" />
+          </AssociationSet>
+          <AssociationSet Name="FK__partida__player2__286302EC" Association="Self.FK__partida__player2__286302EC">
+            <End Role="player" EntitySet="player" />
+            <End Role="partida" EntitySet="partida" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ranking__player__2B3F6F97" Association="Self.FK__ranking__player__2B3F6F97">
+            <End Role="player" EntitySet="player" />
+            <End Role="ranking" EntitySet="ranking" />
+          </AssociationSet>
+          <AssociationSet Name="FK_img_peca_conj_img_pecas" Association="Self.FK_img_peca_conj_img_pecas">
+            <End Role="conj_img_pecas" EntitySet="conj_img_pecas" />
+            <End Role="img_peca" EntitySet="img_peca" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="dominoeng3Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="administradore">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nome" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Senha" Type="String" MaxLength="25" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+        </EntityType>
+        <EntityType Name="conj_img_pecas">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="nome_conjunto" Type="String" MaxLength="64" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="img_peca" Relationship="Self.FK_img_peca_conj_img_pecas" FromRole="conj_img_pecas" ToRole="img_peca" />
+        </EntityType>
+        <EntityType Name="img_fundo_tab">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="nome_fundo" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="conteudo_arquivo" Type="Binary" MaxLength="Max" FixedLength="false" Nullable="false" />
+          <Property Name="nome_arquivo" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+        </EntityType>
+        <EntityType Name="img_peca">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="id_conjunto_pecas" Type="Int32" Nullable="false" />
+          <Property Name="conteudo_arquivo" Type="Binary" MaxLength="Max" FixedLength="false" Nullable="false" />
+          <Property Name="peca_num_cima" Type="Int16" Nullable="false" />
+          <Property Name="peca_num_abaixo" Type="Int16" Nullable="false" />
+          <Property Name="nome_arquivo" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="conj_img_pecas" Relationship="Self.FK_img_peca_conj_img_pecas" FromRole="img_peca" ToRole="conj_img_pecas" />
+        </EntityType>
+        <EntityType Name="partida">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="player1" Type="Int32" Nullable="false" />
+          <Property Name="player2" Type="Int32" Nullable="false" />
+          <Property Name="resultado" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="player" Relationship="Self.FK__partida__player1__276EDEB3" FromRole="partida" ToRole="player" />
+          <NavigationProperty Name="player3" Relationship="Self.FK__partida__player2__286302EC" FromRole="partida" ToRole="player" />
+        </EntityType>
+        <EntityType Name="peca">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="p_up" Type="Int32" Nullable="false" />
+          <Property Name="p_down" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="player">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nome" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Senha" Type="String" MaxLength="25" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Idade" Type="Int32" />
+          <NavigationProperty Name="partidas" Relationship="Self.FK__partida__player1__276EDEB3" FromRole="player" ToRole="partida" />
+          <NavigationProperty Name="partidas1" Relationship="Self.FK__partida__player2__286302EC" FromRole="player" ToRole="partida" />
+          <NavigationProperty Name="rankings" Relationship="Self.FK__ranking__player__2B3F6F97" FromRole="player" ToRole="ranking" />
+        </EntityType>
+        <EntityType Name="ranking">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ranking1" Type="Int32" Nullable="false" />
+          <Property Name="player" Type="Int32" Nullable="false" />
+          <Property Name="partidas_jogadas" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="player1" Relationship="Self.FK__ranking__player__2B3F6F97" FromRole="ranking" ToRole="player" />
+        </EntityType>
+        <Association Name="FK_img_peca_conj_img_pecas">
+          <End Role="conj_img_pecas" Type="Self.conj_img_pecas" Multiplicity="1" />
+          <End Role="img_peca" Type="Self.img_peca" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="conj_img_pecas">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="img_peca">
+              <PropertyRef Name="id_conjunto_pecas" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__partida__player1__276EDEB3">
+          <End Role="player" Type="Self.player" Multiplicity="1" />
+          <End Role="partida" Type="Self.partida" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="player">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="partida">
+              <PropertyRef Name="player1" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__partida__player2__286302EC">
+          <End Role="player" Type="Self.player" Multiplicity="1" />
+          <End Role="partida" Type="Self.partida" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="player">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="partida">
+              <PropertyRef Name="player2" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ranking__player__2B3F6F97">
+          <End Role="player" Type="Self.player" Multiplicity="1" />
+          <End Role="ranking" Type="Self.ranking" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="player">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="ranking">
+              <PropertyRef Name="player" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="dominoeng3Entities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="administradores" EntityType="Self.administradore" />
+          <EntitySet Name="conj_img_pecas" EntityType="Self.conj_img_pecas" />
+          <EntitySet Name="img_fundo_tab" EntityType="Self.img_fundo_tab" />
+          <EntitySet Name="img_peca" EntityType="Self.img_peca" />
+          <EntitySet Name="partidas" EntityType="Self.partida" />
+          <EntitySet Name="pecas" EntityType="Self.peca" />
+          <EntitySet Name="players" EntityType="Self.player" />
+          <EntitySet Name="rankings" EntityType="Self.ranking" />
+          <AssociationSet Name="FK_img_peca_conj_img_pecas" Association="Self.FK_img_peca_conj_img_pecas">
+            <End Role="conj_img_pecas" EntitySet="conj_img_pecas" />
+            <End Role="img_peca" EntitySet="img_peca" />
+          </AssociationSet>
+          <AssociationSet Name="FK__partida__player1__276EDEB3" Association="Self.FK__partida__player1__276EDEB3">
+            <End Role="player" EntitySet="players" />
+            <End Role="partida" EntitySet="partidas" />
+          </AssociationSet>
+          <AssociationSet Name="FK__partida__player2__286302EC" Association="Self.FK__partida__player2__286302EC">
+            <End Role="player" EntitySet="players" />
+            <End Role="partida" EntitySet="partidas" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ranking__player__2B3F6F97" Association="Self.FK__ranking__player__2B3F6F97">
+            <End Role="player" EntitySet="players" />
+            <End Role="ranking" EntitySet="rankings" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="dominoeng3ModelStoreContainer" CdmEntityContainer="dominoeng3Entities">
+          <EntitySetMapping Name="administradores">
+            <EntityTypeMapping TypeName="dominoeng3Model.administradore">
+              <MappingFragment StoreEntitySet="administradores">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Nome" ColumnName="Nome" />
+                <ScalarProperty Name="Senha" ColumnName="Senha" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="conj_img_pecas">
+            <EntityTypeMapping TypeName="dominoeng3Model.conj_img_pecas">
+              <MappingFragment StoreEntitySet="conj_img_pecas">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="nome_conjunto" ColumnName="nome_conjunto" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="img_fundo_tab">
+            <EntityTypeMapping TypeName="dominoeng3Model.img_fundo_tab">
+              <MappingFragment StoreEntitySet="img_fundo_tab">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="nome_fundo" ColumnName="nome_fundo" />
+                <ScalarProperty Name="conteudo_arquivo" ColumnName="conteudo_arquivo" />
+                <ScalarProperty Name="nome_arquivo" ColumnName="nome_arquivo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="img_peca">
+            <EntityTypeMapping TypeName="dominoeng3Model.img_peca">
+              <MappingFragment StoreEntitySet="img_peca">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="id_conjunto_pecas" ColumnName="id_conjunto_pecas" />
+                <ScalarProperty Name="conteudo_arquivo" ColumnName="conteudo_arquivo" />
+                <ScalarProperty Name="peca_num_cima" ColumnName="peca_num_cima" />
+                <ScalarProperty Name="peca_num_abaixo" ColumnName="peca_num_abaixo" />
+                <ScalarProperty Name="nome_arquivo" ColumnName="nome_arquivo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="partidas">
+            <EntityTypeMapping TypeName="dominoeng3Model.partida">
+              <MappingFragment StoreEntitySet="partida">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="player1" ColumnName="player1" />
+                <ScalarProperty Name="player2" ColumnName="player2" />
+                <ScalarProperty Name="resultado" ColumnName="resultado" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="pecas">
+            <EntityTypeMapping TypeName="dominoeng3Model.peca">
+              <MappingFragment StoreEntitySet="peca">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="p_up" ColumnName="p_up" />
+                <ScalarProperty Name="p_down" ColumnName="p_down" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="players">
+            <EntityTypeMapping TypeName="dominoeng3Model.player">
+              <MappingFragment StoreEntitySet="player">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Nome" ColumnName="Nome" />
+                <ScalarProperty Name="Senha" ColumnName="Senha" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Idade" ColumnName="Idade" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="rankings">
+            <EntityTypeMapping TypeName="dominoeng3Model.ranking">
+              <MappingFragment StoreEntitySet="ranking">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="ranking1" ColumnName="ranking" />
+                <ScalarProperty Name="player" ColumnName="player" />
+                <ScalarProperty Name="partidas_jogadas" ColumnName="partidas_jogadas" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
