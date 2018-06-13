@@ -80,9 +80,9 @@
             // 
             this.btnNewUser.Location = new System.Drawing.Point(42, 179);
             this.btnNewUser.Name = "btnNewUser";
-            this.btnNewUser.Size = new System.Drawing.Size(75, 23);
+            this.btnNewUser.Size = new System.Drawing.Size(207, 23);
             this.btnNewUser.TabIndex = 4;
-            this.btnNewUser.Text = "Cadastrar";
+            this.btnNewUser.Text = "Cadastrar Novo Usuário";
             this.btnNewUser.UseVisualStyleBackColor = true;
             this.btnNewUser.Click += new System.EventHandler(this.btnNewUser_Click);
             // 
@@ -111,14 +111,14 @@
             // 
             this.numUserAge.Location = new System.Drawing.Point(149, 141);
             this.numUserAge.Name = "numUserAge";
-            this.numUserAge.Size = new System.Drawing.Size(120, 20);
+            this.numUserAge.Size = new System.Drawing.Size(100, 20);
             this.numUserAge.TabIndex = 9;
             // 
             // FormNewUser
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(548, 261);
+            this.ClientSize = new System.Drawing.Size(288, 261);
             this.Controls.Add(this.numUserAge);
             this.Controls.Add(this.txtUserMail);
             this.Controls.Add(this.txtUserPass);
