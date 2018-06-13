@@ -83,6 +83,12 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>DominoModel.edmx</DependentUpon>
     </Compile>
+    <Compile Include="FormMainScreen.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormMainScreen.Designer.cs">
+      <DependentUpon>FormMainScreen.cs</DependentUpon>
+    </Compile>
     <Compile Include="FormNewUser.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -131,6 +137,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="fmlogin.resx">
       <DependentUpon>fmlogin.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormMainScreen.resx">
+      <DependentUpon>FormMainScreen.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormNewUser.resx">
       <DependentUpon>FormNewUser.cs</DependentUpon>
