@@ -34,8 +34,7 @@
             this.btnCancelar = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.ColunaNome = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ColunaEmail = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.btnPlay = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -53,7 +52,7 @@
             this.txtIDPlayer.Location = new System.Drawing.Point(104, 21);
             this.txtIDPlayer.Name = "txtIDPlayer";
             this.txtIDPlayer.ReadOnly = true;
-            this.txtIDPlayer.Size = new System.Drawing.Size(100, 20);
+            this.txtIDPlayer.Size = new System.Drawing.Size(140, 20);
             this.txtIDPlayer.TabIndex = 2;
             // 
             // label2
@@ -67,9 +66,9 @@
             // 
             // btnCancelar
             // 
-            this.btnCancelar.Location = new System.Drawing.Point(32, 332);
+            this.btnCancelar.Location = new System.Drawing.Point(32, 401);
             this.btnCancelar.Name = "btnCancelar";
-            this.btnCancelar.Size = new System.Drawing.Size(172, 23);
+            this.btnCancelar.Size = new System.Drawing.Size(212, 23);
             this.btnCancelar.TabIndex = 4;
             this.btnCancelar.Text = "Cancelar";
             this.btnCancelar.UseVisualStyleBackColor = true;
@@ -87,31 +86,27 @@
             // dataGridView1
             // 
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.ColunaNome,
-            this.ColunaEmail});
             this.dataGridView1.Location = new System.Drawing.Point(32, 139);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.Size = new System.Drawing.Size(212, 150);
             this.dataGridView1.TabIndex = 6;
             // 
-            // ColunaNome
+            // btnPlay
             // 
-            this.ColunaNome.HeaderText = "Nome";
-            this.ColunaNome.Name = "ColunaNome";
-            this.ColunaNome.ReadOnly = true;
-            // 
-            // ColunaEmail
-            // 
-            this.ColunaEmail.HeaderText = "E-mail";
-            this.ColunaEmail.Name = "ColunaEmail";
-            this.ColunaEmail.ReadOnly = true;
+            this.btnPlay.Location = new System.Drawing.Point(32, 326);
+            this.btnPlay.Name = "btnPlay";
+            this.btnPlay.Size = new System.Drawing.Size(212, 23);
+            this.btnPlay.TabIndex = 7;
+            this.btnPlay.Text = "Jogar contra o Jogador selecionado!";
+            this.btnPlay.UseVisualStyleBackColor = true;
+            this.btnPlay.Click += new System.EventHandler(this.btnPlay_Click);
             // 
             // FormNewGame
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(284, 392);
+            this.ClientSize = new System.Drawing.Size(284, 461);
+            this.Controls.Add(this.btnPlay);
             this.Controls.Add(this.dataGridView1);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.btnCancelar);
@@ -120,6 +115,7 @@
             this.Controls.Add(this.label1);
             this.Name = "FormNewGame";
             this.Text = "Criar um Jogo Novo";
+            this.Load += new System.EventHandler(this.FormNewGame_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -133,7 +129,6 @@
         private System.Windows.Forms.Button btnCancelar;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.DataGridView dataGridView1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ColunaNome;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ColunaEmail;
+        private System.Windows.Forms.Button btnPlay;
     }
 }

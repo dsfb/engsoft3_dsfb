@@ -19,7 +19,7 @@ namespace engsoft3
 
         private void FormNewUser_Load(object sender, EventArgs e)
         {
-
+            
         }
 
         private Boolean validateTextBoxField(TextBox tb, int maxLength, string tbName)

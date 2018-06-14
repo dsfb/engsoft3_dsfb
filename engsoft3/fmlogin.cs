@@ -28,42 +28,25 @@ namespace engsoft3
 
                 if (query.Count() == 1)
                 {
-                    bool getIdJogador = false;
-                    int tentativas = 0;
-                    string idJogador = "";
-                    while (!getIdJogador && tentativas < 5)
-                    {
-                        try
-                        {
-                            idJogador = RequisicoesRestWS.ObterRequisicao("https://agora-vai.herokuapp.com/domino/connect");
-                            int idPlayer;
-                            if (Int32.TryParse(idJogador, out idPlayer))
-                            {
-                                getIdJogador = true;
-                                MessageBox.Show("O id do seu jogador é: " + idJogador);
-                            }
-                            else
-                            {
-                                MessageBox.Show("Erro! O WS retornou um id de jogador inválido!");
-                            }
-                        }
-                        catch (System.Exception ex)
-                        {
-                            tentativas++;
-                        }
-                    }
+                    // Endereço do Web Service Oficial
+                    //idJogador = RequisicoesRestWS.ObterRequisicao("https://agora-vai.herokuapp.com/domino/connect");
+                    List<string> dadosWs = new List<string>();
+                    dadosWs.Add(query.First().Email);
+                    dadosWs.Add(txtuser.Text);                    
+                    string idJogador = RequisicoesRestWS.CustodiaRequisicao("http://localhost:10000/DominoWebService/domino/connect", dadosWs);
 
-                    if (tentativas == 5)
+                    if (idJogador.Length > 0)
                     {
-                        MessageBox.Show("Falha ao conectar-se com o WS!");
-                    }
-                    else
-                    {
+                        MessageBox.Show("O id do seu jogador é: " + idJogador);
                         FormMainScreen ms = new FormMainScreen(idJogador);
                         ms.ShowDialog();
                         txtpass.Text = "";
                         txtuser.Text = "";
                         this.Show();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Falha ao conectar-se com o WS!");
                     }
                 } else
                 {

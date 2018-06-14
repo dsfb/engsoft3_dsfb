@@ -13,6 +13,11 @@ namespace engsoft3.requisicoes_ws
     {
         private static string ConstroiString(string url, List<string> list)
         {
+            if (url.EndsWith("/"))
+            {
+                url = url.Remove(url.Length - 1);
+            }
+
             StringBuilder sb = new StringBuilder(url);
 
             // Loop through List with foreach.
@@ -24,21 +29,13 @@ namespace engsoft3.requisicoes_ws
             return sb.ToString();
         }
 
-        public static string ObterRequisicao(string url, List<string> list)
-        {
-            string urlFinal = ConstroiString(url, list);
-            return ObterRequisicao(urlFinal);
-        }
-
         public static string ObterRequisicao(string url)
         {
             try
             {
                 var request =
                 (HttpWebRequest)WebRequest.Create(url);
-
                 var response = request.GetResponse();
-
                 using (Stream stream = response.GetResponseStream())
                 {
                     var reader = new StreamReader(stream, Encoding.UTF8);
@@ -51,20 +48,20 @@ namespace engsoft3.requisicoes_ws
             }
         }
 
-        public static string custodiaRequisicao(string url)
+        public static string CustodiaRequisicao(string url)
         {
-            return custodiaRequisicao(url, new List<string>());
+            return CustodiaRequisicao(url, new List<string>());
         }
 
-        public static string custodiaRequisicao(string url, List<string> urls)
+        public static string CustodiaRequisicao(string url, List<string> urls)
         {
+            string urlFinal = ConstroiString(url, urls);
             int tentativas = 0;
             while (tentativas < 5)
             {
                 try
                 {
-                    //return RequisicoesRestWS.ObterRequisicao("https://agora-vai.herokuapp.com/domino/connect");
-                    return RequisicoesRestWS.ObterRequisicao(url, urls);
+                    return RequisicoesRestWS.ObterRequisicao(urlFinal);
                 }
                 catch (System.Exception ex)
                 {
