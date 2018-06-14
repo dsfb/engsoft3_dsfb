@@ -4,3 +4,7 @@
 /engsoft3.vshost.exe
 /engsoft3.vshost.exe.config
 /engsoft3.vshost.exe.manifest
+/EntityFramework.SqlServer.dll
+/EntityFramework.SqlServer.xml
+/EntityFramework.dll
+/EntityFramework.xml

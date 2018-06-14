@@ -11,7 +11,7 @@ namespace engsoft3.requisicoes_ws
 {
     public class RequisicoesRestWS
     {
-        public static string ObterRequisicao(string url, List<string> list)
+        private static string ConstroiString(string url, List<string> list)
         {
             StringBuilder sb = new StringBuilder(url);
 
@@ -22,6 +22,12 @@ namespace engsoft3.requisicoes_ws
             }
 
             return sb.ToString();
+        }
+
+        public static string ObterRequisicao(string url, List<string> list)
+        {
+            string urlFinal = ConstroiString(url, list);
+            return ObterRequisicao(urlFinal);
         }
 
         public static string ObterRequisicao(string url)
@@ -47,12 +53,18 @@ namespace engsoft3.requisicoes_ws
 
         public static string custodiaRequisicao(string url)
         {
+            return custodiaRequisicao(url, new List<string>());
+        }
+
+        public static string custodiaRequisicao(string url, List<string> urls)
+        {
             int tentativas = 0;
             while (tentativas < 5)
             {
                 try
                 {
-                    return RequisicoesRestWS.ObterRequisicao("https://agora-vai.herokuapp.com/domino/connect");
+                    //return RequisicoesRestWS.ObterRequisicao("https://agora-vai.herokuapp.com/domino/connect");
+                    return RequisicoesRestWS.ObterRequisicao(url, urls);
                 }
                 catch (System.Exception ex)
                 {
