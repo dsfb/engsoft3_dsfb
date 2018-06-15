@@ -1,4 +1,6 @@
-﻿using System;
+﻿using engsoft3.requisicoes_ws;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -13,6 +15,7 @@ namespace engsoft3
     public partial class FormNewGame : Form
     {
         private string idPlayer;
+        private static string previousResult = null;
         public FormNewGame(string idPlayer)
         {
             InitializeComponent();
@@ -27,6 +30,27 @@ namespace engsoft3
 
         private void FormNewGame_Load(object sender, EventArgs e)
         {
+            string result = RequisicoesRestWS.CustodiaRequisicao(WsUrlManager.GetUrl("/get-free-players/"));
+
+            if (String.IsNullOrEmpty(result))
+            {
+                MessageBox.Show("Opa! Não foi possível carregar os dados de jogadores disponíveis para um novo jogo! Tente mais tarde novamente!");
+                if (String.IsNullOrEmpty(previousResult))
+                {
+                    return;
+                }
+
+                result = previousResult;
+                MessageBox.Show("Mostrando resultados previamente salvos...!");
+            }
+
+            if (String.IsNullOrEmpty(previousResult))
+            {
+                previousResult = result;
+            }
+
+            Dictionary<int, PlayerObject> l = JsonConvert.DeserializeObject<Dictionary<int, PlayerObject>>(result);
+
             DataTable user = new DataTable("User");
             DataColumn c0 = new DataColumn("Nome");
             DataColumn c1 = new DataColumn("E-mail");

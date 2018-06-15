@@ -28,14 +28,20 @@ namespace engsoft3
 
                 if (query.Count() == 1)
                 {
-                    // Endereço do Web Service Oficial
-                    //idJogador = RequisicoesRestWS.ObterRequisicao("https://agora-vai.herokuapp.com/domino/connect");
                     List<string> dadosWs = new List<string>();
+                    dadosWs.Add(Convert.ToString(query.First().ID));
                     dadosWs.Add(query.First().Email);
-                    dadosWs.Add(txtuser.Text);                    
-                    string idJogador = RequisicoesRestWS.CustodiaRequisicao("http://localhost:10000/DominoWebService/domino/connect", dadosWs);
+                    dadosWs.Add(txtuser.Text);
+                    string idJogador = Convert.ToString(query.First().ID);
+                    string result = RequisicoesRestWS.CustodiaRequisicao(WsUrlManager.GetUrl("/connect"), dadosWs);
+                    
+                    if (String.IsNullOrEmpty(result))
+                    {
+                        MessageBox.Show("Não foi possível logar-se! Tente novamente, mais tarde!");
+                        return;
+                    }
 
-                    if (idJogador.Length > 0)
+                    if (Convert.ToBoolean(result))
                     {
                         MessageBox.Show("O id do seu jogador é: " + idJogador);
                         FormMainScreen ms = new FormMainScreen(idJogador);
@@ -46,7 +52,7 @@ namespace engsoft3
                     }
                     else
                     {
-                        MessageBox.Show("Falha ao conectar-se com o WS!");
+                        MessageBox.Show("O Web Service retornou um resultado inválido! Abortando a operação de login!");
                     }
                 } else
                 {

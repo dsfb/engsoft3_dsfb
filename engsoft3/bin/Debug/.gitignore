@@ -8,3 +8,5 @@
 /EntityFramework.SqlServer.xml
 /EntityFramework.dll
 /EntityFramework.xml
+/Newtonsoft.Json.dll
+/Newtonsoft.Json.xml
