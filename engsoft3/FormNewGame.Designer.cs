@@ -35,6 +35,7 @@
             this.label3 = new System.Windows.Forms.Label();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.btnPlay = new System.Windows.Forms.Button();
+            this.btnManageNewGameRequest = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -66,7 +67,7 @@
             // 
             // btnCancelar
             // 
-            this.btnCancelar.Location = new System.Drawing.Point(32, 401);
+            this.btnCancelar.Location = new System.Drawing.Point(32, 413);
             this.btnCancelar.Name = "btnCancelar";
             this.btnCancelar.Size = new System.Drawing.Size(212, 23);
             this.btnCancelar.TabIndex = 4;
@@ -101,11 +102,22 @@
             this.btnPlay.UseVisualStyleBackColor = true;
             this.btnPlay.Click += new System.EventHandler(this.btnPlay_Click);
             // 
+            // btnManageNewGameRequest
+            // 
+            this.btnManageNewGameRequest.Location = new System.Drawing.Point(32, 372);
+            this.btnManageNewGameRequest.Name = "btnManageNewGameRequest";
+            this.btnManageNewGameRequest.Size = new System.Drawing.Size(212, 23);
+            this.btnManageNewGameRequest.TabIndex = 8;
+            this.btnManageNewGameRequest.Text = "Administrar pedidos de novos jogos!";
+            this.btnManageNewGameRequest.UseVisualStyleBackColor = true;
+            this.btnManageNewGameRequest.Click += new System.EventHandler(this.btnManageNewGameRequest_Click);
+            // 
             // FormNewGame
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(284, 461);
+            this.Controls.Add(this.btnManageNewGameRequest);
             this.Controls.Add(this.btnPlay);
             this.Controls.Add(this.dataGridView1);
             this.Controls.Add(this.label3);
@@ -130,5 +142,6 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.DataGridView dataGridView1;
         private System.Windows.Forms.Button btnPlay;
+        private System.Windows.Forms.Button btnManageNewGameRequest;
     }
 }

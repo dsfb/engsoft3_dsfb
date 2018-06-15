@@ -8,3 +8,5 @@
 /engsoft3.vshost.exe
 /engsoft3.vshost.exe.config
 /engsoft3.vshost.exe.manifest
+/Newtonsoft.Json.dll
+/Newtonsoft.Json.xml

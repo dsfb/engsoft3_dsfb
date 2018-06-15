@@ -16,6 +16,7 @@ namespace engsoft3
     {
         private string idPlayer;
         private static string previousResult = null;
+        private static Dictionary<int, PlayerObject> poDic = new Dictionary<int, PlayerObject>();
         public FormNewGame(string idPlayer)
         {
             InitializeComponent();
@@ -49,29 +50,57 @@ namespace engsoft3
                 previousResult = result;
             }
 
-            Dictionary<int, PlayerObject> l = JsonConvert.DeserializeObject<Dictionary<int, PlayerObject>>(result);
-
-            DataTable user = new DataTable("User");
-            DataColumn c0 = new DataColumn("Nome");
-            DataColumn c1 = new DataColumn("E-mail");
-            user.Columns.Add(c0);
-            user.Columns.Add(c1);
-
-            using (var context = new dominoeng3Entities())
+            Dictionary<int, PlayerObject> dic = JsonConvert.DeserializeObject<Dictionary<int, PlayerObject>>(result);
+            if (dic.ContainsKey(Convert.ToInt32(this.idPlayer)))
             {
-                var players = from p in context.players
-                              where !p.ID.ToString().Equals(this.idPlayer)
-                              select p;
-                foreach (var player in players)
-                {
-                    DataRow row = user.NewRow();
-                    row["Nome"] = player.Nome;
-                    row["E-mail"] = player.Email;
-                    user.Rows.Add(row);
-                }
+                dic.Remove(Convert.ToInt32(this.idPlayer));
             }
 
-            dataGridView1.DataSource = user;
+            if (dic.Count() > 0)
+            {
+                poDic = dic;
+
+                DataTable user = new DataTable("User");
+                DataColumn c0 = new DataColumn("Nome");
+                DataColumn c1 = new DataColumn("E-mail");
+                user.Columns.Add(c0);
+                user.Columns.Add(c1);
+
+                foreach (var x in dic)
+                {
+                    PlayerObject po = x.Value;
+
+                    DataRow row = user.NewRow();
+                    row["Nome"] = po.name;
+                    row["E-mail"] = po.email;
+                    user.Rows.Add(row);
+                }
+
+                dataGridView1.DataSource = user;
+                
+            }
+            else
+            {
+                DataTable user = new DataTable("User");
+                DataColumn c0 = new DataColumn("Nome");
+                DataColumn c1 = new DataColumn("E-mail");
+                user.Columns.Add(c0);
+                user.Columns.Add(c1);
+
+                DataRow row = user.NewRow();
+                row["Nome"] = "Sem jogadores disponíveis!";
+                row["E-mail"] = "";                
+                user.Rows.Add(row);
+
+                dataGridView1.DataSource = user;
+            }
+
+
+            
+
+            
+
+            
         }
 
         private void btnPlay_Click(object sender, EventArgs e)
@@ -101,6 +130,11 @@ namespace engsoft3
             }
                 
             
+        }
+
+        private void btnManageNewGameRequest_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
