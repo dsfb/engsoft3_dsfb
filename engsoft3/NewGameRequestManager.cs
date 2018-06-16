@@ -67,22 +67,13 @@ namespace engsoft3
             using (var db = new dominoeng3Entities())
             {
                 var query = from u in db.partidas
-                            where (u.estado == 3 && u.player2 == idPlayer) ||
-                                    (u.estado == 4 && u.player1 == idPlayer)
+                            where (u.estado == 3 && u.player2 == idPlayer)
                             select u;
 
                 if (query.Count() > 0)
                 {
-                    DialogResult res;
-                    if (query.First().estado == 3)
-                    {
-                        res = MessageBox.Show("Você quer jogar agora, assim como o Jogador 1?", "Confirmation", MessageBoxButtons.OKCancel, MessageBoxIcon.Information);
-                    }
-                    else
-                    {
-                        res = MessageBox.Show("Você quer jogar agora, assim como o Jogador 2?", "Confirmation", MessageBoxButtons.OKCancel, MessageBoxIcon.Information);
-                    }
-                    
+                    DialogResult res = MessageBox.Show("Você quer jogar agora, assim como o Jogador 1?", "Confirmation", MessageBoxButtons.OKCancel, MessageBoxIcon.Information);
+
                     if (res == DialogResult.OK)
                     {
                         partida p = query.First();
@@ -101,7 +92,7 @@ namespace engsoft3
                 else
                 {
                     query = from u in db.partidas
-                                where (u.estado == 5 && (u.player1 == idPlayer || u.player2 == idPlayer))
+                                where (u.estado == 4 && (u.player1 == idPlayer || u.player2 == idPlayer))
                                 select u;
 
                     if (query.Count() > 0)
@@ -109,10 +100,19 @@ namespace engsoft3
                         DialogResult res = MessageBox.Show("O jogo pode ser iniciado agora, mesmo?", "Confirmation", MessageBoxButtons.OKCancel, MessageBoxIcon.Information);
                         if (res == DialogResult.OK)
                         {
+                            partida p = query.First();
+
+                            string idGame = Convert.ToString(p.ID);
+                            string idPlayer1 = Convert.ToString(p.player1);
+                            string idPlayer2 = Convert.ToString(p.player2);
+
+                            p.estado = p.estado + 1;
+                            db.SaveChanges();
+
                             List<string> dadosWs = new List<string>();
-                            dadosWs.Add(Convert.ToString(query.First().ID));
-                            dadosWs.Add(Convert.ToString(query.First().player1));
-                            dadosWs.Add(Convert.ToString(query.First().player2));
+                            dadosWs.Add(idGame);
+                            dadosWs.Add(idPlayer1);
+                            dadosWs.Add(idPlayer2);
 
                             string result = RequisicoesRestWS.CustodiaRequisicao(WsUrlManager.GetUrl("/newgame"), dadosWs);
 
@@ -126,17 +126,16 @@ namespace engsoft3
                             {
                                 string idOpponent;
 
-                                if (query.First().player1 == Convert.ToInt32(this.idPlayer))
+                                if (idPlayer1.Equals(this.idPlayer))
                                 {
-                                    idOpponent = Convert.ToString(query.First().player2);
+                                    idOpponent = idPlayer2;
                                 }
                                 else
                                 {
-                                    idOpponent = Convert.ToString(query.First().player1);
+                                    idOpponent = idPlayer1;
                                 }
 
-                                fmdomino fd = new fmdomino(Convert.ToString(query.First().ID), 
-                                                            Convert.ToString(this.idPlayer), idOpponent);
+                                fmdomino fd = new fmdomino(idGame, Convert.ToString(this.idPlayer), idOpponent);
                                 fd.ShowDialog();
                             }
                             else

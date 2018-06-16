@@ -1,8 +1,11 @@
-﻿using System;
+﻿using engsoft3.requisicoes_ws;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -14,12 +17,20 @@ namespace engsoft3
     public partial class fmdomino : Form
     {
         private bool initialized = false;
-        private int[] allowed_numbers = new int[2];
-        private Dictionary<Button, string> dic_but_str = new Dictionary<Button, string>();
+        private Dictionary<Button, PieceObject> dic_but_po = new Dictionary<Button, PieceObject>();
         private string idGame;
         private string idPlayer;
         private string idOpponent;
-
+        private string idTabuleiro;
+        private List<PieceObject> lista;
+        private conj_img_pecas cip;
+        private img_fundo_tab ift;
+        private int top = 250;
+        private int left = 350;
+        private int extremoA = -1;
+        private int extremoB = -1;
+        private int topBody = 150;
+        private int leftBody = 150;
 
         public fmdomino(string idGame, string idPlayer, string idOpponent)
         {
@@ -29,17 +40,70 @@ namespace engsoft3
             this.idOpponent = idOpponent;
         }
 
-        public string ranimg()
+        private byte[] GetImageContent(int id_cip, int faceA, int faceB)
         {
-            //Buscando imagens aleatórias, -: futuramente peças inicializadas no banco
-            var rand = new Random(DateTime.Now.Millisecond);
-            var files = Directory.GetFiles(Utils.get_img_dir(), "*.png");                                           
-            return files[rand.Next(files.Length)];
+            using (var db = new dominoeng3Entities())
+            {
+                var query = from u in db.img_peca
+                            where u.id_conjunto_pecas == id_cip && 
+                            (u.peca_num_abaixo == faceA && u.peca_num_cima == faceB)
+                            select u;
+
+                if (query.Count() == 0)
+                {
+                    query = from u in db.img_peca
+                            where u.id_conjunto_pecas == id_cip &&
+                            (u.peca_num_abaixo == faceB && u.peca_num_cima == faceA)
+                            select u;
+
+                    if (query.Count() == 0)
+                    {
+                        MessageBox.Show("Opa! Não foi possível carregar a imagem desejada! Id_cip: " + id_cip + " ,faces: " + faceA + "-" + faceB);
+                        return new byte[] { };
+                    }
+                }
+
+                var peca = query.FirstOrDefault();
+                return peca.conteudo_arquivo;
+            }
         }
 
-        private Image resizeImage(Image imgToResize, Size size)
+        private void SetPieces()
         {
-            return (Image)(new Bitmap(imgToResize, size));
+            List<string> dadosWs = new List<string>();
+            dadosWs.Add(this.idGame);
+            dadosWs.Add(this.idPlayer);
+            string result = RequisicoesRestWS.CustodiaRequisicao(WsUrlManager.GetUrl("/get-pieces"), dadosWs);
+
+            if (String.IsNullOrEmpty(result))
+            {
+                MessageBox.Show("Não foi possível pegar as suas peças! Tente novamente, mais tarde!");
+                return;
+            }
+
+            lista = JsonConvert.DeserializeObject<List<PieceObject>>(result);
+        }
+
+        private Image ResizeImage(Image imgToResize, Size size)
+        {
+            return this.ScaleImage(imgToResize, size.Width, size.Height);
+        }
+
+        private Image ScaleImage(Image image, int maxWidth, int maxHeight)
+        {
+            var ratioX = (double)maxWidth / image.Width;
+            var ratioY = (double)maxHeight / image.Height;
+            var ratio = Math.Min(ratioX, ratioY);
+
+            var newWidth = (int)(image.Width * ratio);
+            var newHeight = (int)(image.Height * ratio);
+
+            var newImage = new Bitmap(newWidth, newHeight);
+
+            using (var graphics = Graphics.FromImage(newImage))
+                graphics.DrawImage(image, 0, 0, newWidth, newHeight);
+
+            return newImage;
         }
 
         private void playDominoTile()
@@ -56,6 +120,49 @@ namespace engsoft3
             }
         }
 
+        public Image RotateImage(Image img, float rotationAngle)
+        {
+            //create an empty Bitmap image
+            Bitmap bmp = new Bitmap(img.Width, img.Height);
+
+            //turn the Bitmap into a Graphics object
+            Graphics gfx = Graphics.FromImage(bmp);
+
+            //now we set the rotation point to the center of our image
+            gfx.TranslateTransform((float)bmp.Width / 2, (float)bmp.Height / 2);
+
+            //now rotate the image
+            gfx.RotateTransform(rotationAngle);
+
+            gfx.TranslateTransform(-(float)bmp.Width / 2, -(float)bmp.Height / 2);
+
+            //set the InterpolationMode to HighQualityBicubic so to ensure a high
+            //quality image once it is transformed to the specified size
+            gfx.InterpolationMode = InterpolationMode.HighQualityBicubic;
+
+            //now draw our new image onto the graphics object
+            gfx.DrawImage(img, new Point(0, 0));
+
+            //dispose of our Graphics object
+            gfx.Dispose();
+
+            //return the image
+            return bmp;
+        }
+
+        private void DrawTile(PieceObject po, Button b)
+        {
+            Image bimg = b.BackgroundImage;
+            if (po.faceA != po.faceB)
+            { 
+                bimg = this.RotateImage(bimg, 90);
+            }            
+            b.BackgroundImage = bimg;
+            Point newLoc = new Point(topBody, leftBody);
+            b.Location = newLoc;
+            
+        }
+
         private void fmdomino_Load(object sender, EventArgs e)
         {
             //Inicia com as peças iniciais + peça central.
@@ -67,34 +174,107 @@ namespace engsoft3
              * a cabeça e o final da peça */
             /* As peças podem ser cadastradas no banco de dados */
 
+            this.SetPieces();
 
-
-            Point newLoc = new Point(250, 350);
-            for (int i = 0; i < 5; ++i)
+            using (var db = new dominoeng3Entities())
             {
-                string filePath = ranimg();
+                var query = from u in db.conj_img_pecas
+                            select u;
+
+                if (query.Count() > 0)
+                {
+                    cip = query.FirstOrDefault();
+
+                }
+                else
+                {
+                    MessageBox.Show("Opa! Não existe um conjunto de imagens carregado! O jogo não irá prosseguir!");
+                    return;
+                }
+
+                var query2 = from u in db.img_fundo_tab
+                        select u;
+
+                if (query2.Count() > 0)
+                {
+                    ift = query2.FirstOrDefault();
+                }
+                else
+                {
+                    MessageBox.Show("Opa! Não existe ao menos uma imagem de tabuleiro cadastrada! O jogo não irá prosseguir!");
+                    return;
+                }
+            }
+
+            foreach(var piece in lista)
+            {
+                Point newLoc = new Point(top, left);
+                top += 55;
                 Button b = new Button();
 
-                dic_but_str[b] = filePath;
+                dic_but_po[b] = piece;
 
                 b.Size = new Size(50, 90);
                 b.Location = newLoc;
                 b.Click += (s, ne) => {
-                    string file_name = Utils.get_file_name(dic_but_str[b]);
-                    TileData td = TileDataStorage.GetTileData(file_name);
+                    PieceObject po = dic_but_po[b];
+                    MessageBox.Show("Voce quer jogar a peça: " + po.faceA + "-" + po.faceB);
 
+                    string result;
+                    if (extremoA != -1)
+                    {
+                        string escolha = cbBChoice.SelectedValue.ToString();
+                        if (escolha.Equals("Direita"))
+                        {
+                            List<string> dadosWs = new List<string>();
+                            dadosWs.Add(idGame);
+                            dadosWs.Add(idPlayer);
+                            result = RequisicoesRestWS.CustodiaRequisicao(WsUrlManager.GetUrl("/connect"), dadosWs);
+                        }
+                        else if (escolha.Equals("Esquerda"))
+                        {
+                            List<string> dadosWs = new List<string>();
+                            result = RequisicoesRestWS.CustodiaRequisicao(WsUrlManager.GetUrl("/connect"), dadosWs);
+                        }
+                        else
+                        {
+                            MessageBox.Show("Escolha um sentido: Direita ou Esquerda!");
+                            return;
+                        }
+                    }
+                    else 
+                    {
+                        List<string> dadosWs = new List<string>();
+                        dadosWs.Add(idGame);
+                        dadosWs.Add(idPlayer);
+                        dadosWs.Add(po.faceA.ToString());
+                        dadosWs.Add(po.faceB.ToString());
+                        dadosWs.Add("A");
+                        result = RequisicoesRestWS.CustodiaRequisicao(WsUrlManager.GetUrl("/play"), dadosWs);
+                    }
+                    
+                    if (String.IsNullOrEmpty(result))
+                    {
+                        MessageBox.Show("Não foi possível jogar-se! Tente novamente, mais tarde!");
+                        return;
+                    }
 
+                    if (Convert.ToBoolean(result))
+                    {
+                        this.DrawTile(po, b);
+                    }
                 };
+
                 newLoc.Offset(b.Height + 10, 0);
 
-
-
-
-                b.BackgroundImage = Image.FromFile(filePath);
+                byte[] dadosImg = this.GetImageContent(this.cip.ID, piece.faceA, piece.faceB);
+                MemoryStream ms = new MemoryStream(dadosImg);
+                Image img = Image.FromStream(ms);
+                b.BackgroundImage = this.ResizeImage(img, b.Size);
+                b.BackgroundImageLayout = ImageLayout.Stretch;
                 b.ImageAlign = ContentAlignment.MiddleRight;
-                b.TextAlign = ContentAlignment.MiddleLeft;
+                b.TextAlign = ContentAlignment.MiddleLeft;                
                 Controls.Add(b);
-                System.Threading.Thread.Sleep(1);
             }
         }
     }

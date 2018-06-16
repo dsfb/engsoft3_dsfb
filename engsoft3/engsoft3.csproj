@@ -117,6 +117,12 @@
     <Compile Include="FormRequest.Designer.cs">
       <DependentUpon>FormRequest.cs</DependentUpon>
     </Compile>
+    <Compile Include="FormSkinManager.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormSkinManager.Designer.cs">
+      <DependentUpon>FormSkinManager.cs</DependentUpon>
+    </Compile>
     <Compile Include="img_fundo_tab.cs">
       <DependentUpon>DominoModel.tt</DependentUpon>
     </Compile>
@@ -130,6 +136,7 @@
     <Compile Include="peca.cs">
       <DependentUpon>DominoModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="PieceObject.cs" />
     <Compile Include="player.cs">
       <DependentUpon>DominoModel.tt</DependentUpon>
     </Compile>
@@ -178,6 +185,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FormRequest.resx">
       <DependentUpon>FormRequest.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormSkinManager.resx">
+      <DependentUpon>FormSkinManager.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
