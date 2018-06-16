@@ -35,7 +35,7 @@
             this.label3 = new System.Windows.Forms.Label();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.btnPlay = new System.Windows.Forms.Button();
-            this.btnManageNewGameRequest = new System.Windows.Forms.Button();
+            this.labelOponentes = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -67,7 +67,7 @@
             // 
             // btnCancelar
             // 
-            this.btnCancelar.Location = new System.Drawing.Point(32, 413);
+            this.btnCancelar.Location = new System.Drawing.Point(32, 397);
             this.btnCancelar.Name = "btnCancelar";
             this.btnCancelar.Size = new System.Drawing.Size(212, 23);
             this.btnCancelar.TabIndex = 4;
@@ -94,7 +94,7 @@
             // 
             // btnPlay
             // 
-            this.btnPlay.Location = new System.Drawing.Point(32, 326);
+            this.btnPlay.Location = new System.Drawing.Point(32, 353);
             this.btnPlay.Name = "btnPlay";
             this.btnPlay.Size = new System.Drawing.Size(212, 23);
             this.btnPlay.TabIndex = 7;
@@ -102,22 +102,21 @@
             this.btnPlay.UseVisualStyleBackColor = true;
             this.btnPlay.Click += new System.EventHandler(this.btnPlay_Click);
             // 
-            // btnManageNewGameRequest
+            // labelOponentes
             // 
-            this.btnManageNewGameRequest.Location = new System.Drawing.Point(32, 372);
-            this.btnManageNewGameRequest.Name = "btnManageNewGameRequest";
-            this.btnManageNewGameRequest.Size = new System.Drawing.Size(212, 23);
-            this.btnManageNewGameRequest.TabIndex = 8;
-            this.btnManageNewGameRequest.Text = "Administrar pedidos de novos jogos!";
-            this.btnManageNewGameRequest.UseVisualStyleBackColor = true;
-            this.btnManageNewGameRequest.Click += new System.EventHandler(this.btnManageNewGameRequest_Click);
+            this.labelOponentes.AutoSize = true;
+            this.labelOponentes.Location = new System.Drawing.Point(29, 317);
+            this.labelOponentes.Name = "labelOponentes";
+            this.labelOponentes.Size = new System.Drawing.Size(179, 13);
+            this.labelOponentes.TabIndex = 9;
+            this.labelOponentes.Text = "<<Label disponibilidade Oponente>>";
             // 
             // FormNewGame
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(284, 461);
-            this.Controls.Add(this.btnManageNewGameRequest);
+            this.ClientSize = new System.Drawing.Size(284, 439);
+            this.Controls.Add(this.labelOponentes);
             this.Controls.Add(this.btnPlay);
             this.Controls.Add(this.dataGridView1);
             this.Controls.Add(this.label3);
@@ -142,6 +141,6 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.DataGridView dataGridView1;
         private System.Windows.Forms.Button btnPlay;
-        private System.Windows.Forms.Button btnManageNewGameRequest;
+        private System.Windows.Forms.Label labelOponentes;
     }
 }

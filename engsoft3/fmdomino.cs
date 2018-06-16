@@ -16,10 +16,17 @@ namespace engsoft3
         private bool initialized = false;
         private int[] allowed_numbers = new int[2];
         private Dictionary<Button, string> dic_but_str = new Dictionary<Button, string>();
+        private string idGame;
+        private string idPlayer;
+        private string idOpponent;
 
-        public fmdomino()
+
+        public fmdomino(string idGame, string idPlayer, string idOpponent)
         {
             InitializeComponent();
+            this.idGame = idGame;
+            this.idPlayer = idPlayer;
+            this.idOpponent = idOpponent;
         }
 
         public string ranimg()
@@ -49,7 +56,7 @@ namespace engsoft3
             }
         }
 
-        private void btnstart_Click(object sender, EventArgs e)
+        private void fmdomino_Load(object sender, EventArgs e)
         {
             //Inicia com as peças iniciais + peça central.
             /*Os códigos de botões novos terão de ser criados aqui
@@ -59,10 +66,10 @@ namespace engsoft3
             /*As peças serão inicializadas com structs identificando
              * a cabeça e o final da peça */
             /* As peças podem ser cadastradas no banco de dados */
-    
-            
 
-            Point newLoc = new Point(250, 350); 
+
+
+            Point newLoc = new Point(250, 350);
             for (int i = 0; i < 5; ++i)
             {
                 string filePath = ranimg();
@@ -79,8 +86,8 @@ namespace engsoft3
 
                 };
                 newLoc.Offset(b.Height + 10, 0);
-                
-                
+
+
 
 
                 b.BackgroundImage = Image.FromFile(filePath);

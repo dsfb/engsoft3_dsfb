@@ -18,6 +18,7 @@ namespace engsoft3
         public int player1 { get; set; }
         public int player2 { get; set; }
         public string resultado { get; set; }
+        public int estado { get; set; }
     
         public virtual player player { get; set; }
         public virtual player player3 { get; set; }

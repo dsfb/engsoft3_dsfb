@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="dominoeng3Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="dominoeng3Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="administradores">
           <Key>
             <PropertyRef Name="ID" />
@@ -48,6 +48,7 @@
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="player1" Type="int" Nullable="false" />
           <Property Name="player2" Type="int" Nullable="false" />
+          <Property Name="estado" Type="int" Nullable="false" />
           <Property Name="resultado" Type="varchar" MaxLength="10" />
         </EntityType>
         <EntityType Name="peca">
@@ -76,6 +77,7 @@
           <Property Name="ranking" Type="int" Nullable="false" />
           <Property Name="player" Type="int" Nullable="false" />
           <Property Name="partidas_jogadas" Type="int" Nullable="false" />
+          <Property Name="vitórias" Type="int" Nullable="false" />
         </EntityType>
         <Association Name="FK__partida__player1__276EDEB3">
           <End Role="player" Type="Self.player" Multiplicity="1" />
@@ -151,8 +153,7 @@
             <End Role="img_peca" EntitySet="img_peca" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="dominoeng3Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -204,6 +205,7 @@
           <Property Name="resultado" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="player" Relationship="Self.FK__partida__player1__276EDEB3" FromRole="partida" ToRole="player" />
           <NavigationProperty Name="player3" Relationship="Self.FK__partida__player2__286302EC" FromRole="partida" ToRole="player" />
+          <Property Name="estado" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="peca">
           <Key>
@@ -235,6 +237,7 @@
           <Property Name="player" Type="Int32" Nullable="false" />
           <Property Name="partidas_jogadas" Type="Int32" Nullable="false" />
           <NavigationProperty Name="player1" Relationship="Self.FK__ranking__player__2B3F6F97" FromRole="ranking" ToRole="player" />
+          <Property Name="vitórias" Type="Int32" Nullable="false" />
         </EntityType>
         <Association Name="FK_img_peca_conj_img_pecas">
           <End Role="conj_img_pecas" Type="Self.conj_img_pecas" Multiplicity="1" />
@@ -359,6 +362,7 @@
           <EntitySetMapping Name="partidas">
             <EntityTypeMapping TypeName="dominoeng3Model.partida">
               <MappingFragment StoreEntitySet="partida">
+                <ScalarProperty Name="estado" ColumnName="estado" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="player1" ColumnName="player1" />
                 <ScalarProperty Name="player2" ColumnName="player2" />
@@ -389,6 +393,7 @@
           <EntitySetMapping Name="rankings">
             <EntityTypeMapping TypeName="dominoeng3Model.ranking">
               <MappingFragment StoreEntitySet="ranking">
+                <ScalarProperty Name="vitórias" ColumnName="vitórias" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="ranking1" ColumnName="ranking" />
                 <ScalarProperty Name="player" ColumnName="player" />

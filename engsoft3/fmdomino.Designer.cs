@@ -29,18 +29,7 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(fmdomino));
-            this.btnstart = new System.Windows.Forms.Button();
             this.SuspendLayout();
-            // 
-            // btnstart
-            // 
-            this.btnstart.Location = new System.Drawing.Point(60, 51);
-            this.btnstart.Name = "btnstart";
-            this.btnstart.Size = new System.Drawing.Size(75, 23);
-            this.btnstart.TabIndex = 0;
-            this.btnstart.Text = "Start";
-            this.btnstart.UseVisualStyleBackColor = true;
-            this.btnstart.Click += new System.EventHandler(this.btnstart_Click);
             // 
             // fmdomino
             // 
@@ -49,15 +38,13 @@
             this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(944, 516);
-            this.Controls.Add(this.btnstart);
             this.Name = "fmdomino";
             this.Text = "fmdomino";
+            this.Load += new System.EventHandler(this.fmdomino_Load);
             this.ResumeLayout(false);
 
         }
 
         #endregion
-
-        private System.Windows.Forms.Button btnstart;
     }
 }

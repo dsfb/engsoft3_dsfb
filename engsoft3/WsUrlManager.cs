@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace engsoft3
 {
@@ -12,13 +13,14 @@ namespace engsoft3
          https://agora-vai.herokuapp.com/domino/connect
          http://localhost:10000/DominoWebService/domino/connect
          */
+        public const string address = "https://agora-vai.herokuapp.com";
+        public const string port = "";
         /*
-         public const string address = "https://agora-vai.herokuapp.com";
-         public const string port = "";
-         */
         public const string address = "http://localhost";
         public const string port = "10000";
-        public const string preSufixo = "/DominoWebService/domino";
+        */
+        //public const string preSufixo = "/DominoWebService/domino";
+        public const string preSufixo = "/domino";
 
         public static string GetUrl(string sufixo)
         {
@@ -35,7 +37,8 @@ namespace engsoft3
 
             sb.Append(sufixo);
 
-             return sb.ToString();
+            MessageBox.Show("Url: " + sb);
+            return sb.ToString();
         }
     }
 }

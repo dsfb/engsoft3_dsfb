@@ -18,6 +18,7 @@ namespace engsoft3
         public int ranking1 { get; set; }
         public int player { get; set; }
         public int partidas_jogadas { get; set; }
+        public int vitórias { get; set; }
     
         public virtual player player1 { get; set; }
     }

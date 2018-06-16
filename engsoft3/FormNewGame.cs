@@ -77,7 +77,8 @@ namespace engsoft3
                 }
 
                 dataGridView1.DataSource = user;
-                
+
+                labelOponentes.Text = "Existem jogadores disponíveis!";
             }
             else
             {
@@ -87,12 +88,9 @@ namespace engsoft3
                 user.Columns.Add(c0);
                 user.Columns.Add(c1);
 
-                DataRow row = user.NewRow();
-                row["Nome"] = "Sem jogadores disponíveis!";
-                row["E-mail"] = "";                
-                user.Rows.Add(row);
-
                 dataGridView1.DataSource = user;
+
+                labelOponentes.Text = "Sem jogadores disponíveis!";
             }
 
 

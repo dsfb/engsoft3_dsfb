@@ -111,12 +111,19 @@
     <Compile Include="FormRanking.Designer.cs">
       <DependentUpon>FormRanking.cs</DependentUpon>
     </Compile>
+    <Compile Include="FormRequest.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormRequest.Designer.cs">
+      <DependentUpon>FormRequest.cs</DependentUpon>
+    </Compile>
     <Compile Include="img_fundo_tab.cs">
       <DependentUpon>DominoModel.tt</DependentUpon>
     </Compile>
     <Compile Include="img_peca.cs">
       <DependentUpon>DominoModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="NewGameRequestManager.cs" />
     <Compile Include="partida.cs">
       <DependentUpon>DominoModel.tt</DependentUpon>
     </Compile>
@@ -168,6 +175,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FormRanking.resx">
       <DependentUpon>FormRanking.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormRequest.resx">
+      <DependentUpon>FormRequest.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

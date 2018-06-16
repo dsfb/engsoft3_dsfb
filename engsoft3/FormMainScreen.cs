@@ -17,6 +17,7 @@ namespace engsoft3
         {
             InitializeComponent();
             this.idPlayer = idPlayer;
+            NewGameRequestManager.GetInstance(Convert.ToInt32(this.idPlayer));
         }
 
         private void btnRankings_Click(object sender, EventArgs e)
@@ -29,6 +30,38 @@ namespace engsoft3
         {
             FormNewGame fng = new FormNewGame(this.idPlayer);
             fng.ShowDialog();
+        }
+
+        private void btnSeeRequest_Click(object sender, EventArgs e)
+        {
+            FormRequest fr = new FormRequest(Convert.ToInt32(this.idPlayer));
+            fr.ShowDialog();
+        }
+
+        private void btnPlayAcceptedGame_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                using (var db = new dominoeng3Entities())
+                {
+                    int id = Convert.ToInt32(idPlayer);
+                    partida p = db.partidas.Single(c => c.player1 == id && c.estado == 1);
+                    p.estado = 3;
+
+                    db.SaveChanges();
+
+                    MessageBox.Show("Pedido feito para começar o jogo aceito agora!");
+                }
+            }
+            catch (System.InvalidOperationException)
+            {
+                MessageBox.Show("Não existem jogos aceitos para pedidos deste jogador!");
+            }
+        }
+
+        private void FormMainScreen_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            NewGameRequestManager.Cancel();
         }
     }
 }
