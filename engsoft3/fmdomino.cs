@@ -10,6 +10,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Timers;
 using System.Windows.Forms;
 
 namespace engsoft3
@@ -29,8 +30,145 @@ namespace engsoft3
         private int left = 350;
         private int extremoA = -1;
         private int extremoB = -1;
-        private int topBody = 150;
-        private int leftBody = 150;
+        private int topBody_left = 100;
+        private int leftBody_left = 450;
+        private int topBody_right = 100;
+        private int leftBody_right = 450;
+        private List<Button> btnPieces = new List<Button>();
+        private int esquerdaState = 0, direitaState = 0;
+        private bool esquerdaEqual = false, direitaEqual = false;
+        private bool firstEsquerdaState1 = false;
+        private bool firstDireitaState1 = false;
+        private bool firstEsquerdaState2 = false;
+        private bool firstDireitaState2 = false;
+        private int lastWidthDireita = 0;
+        private int lastWidthEsquerda = 0;
+        private System.Timers.Timer aTimer = new System.Timers.Timer();
+        private PieceObject lastPiece;
+        private bool firstMessage = true;
+
+        // Specify what you want to happen when the Elapsed event is raised.
+        private void OnTimedEvent(object source, ElapsedEventArgs e)
+        {
+            int winnerGame = GetWinnerGame();
+            ManageWinnerGame(winnerGame);
+            
+        }
+
+        private void ManageWinnerGame(int winnerGame)
+        {
+            if (winnerGame == 3)
+            {
+                return;
+            }
+            else if (winnerGame == 1)
+            {
+                MessageBox.Show("Você ganhou! Parabéns!");
+                lblStatus.Text = "Vitória!";
+                aTimer.Enabled = false;
+                DisableButtons();
+            }
+            else if (winnerGame == 2)
+            {
+                MessageBox.Show("Você perdeu! Tente outra vez!");
+                lblStatus.Text = "Derrota!";
+                aTimer.Enabled = false;
+                DisableButtons();
+            }
+            else if (winnerGame == 0)
+            {
+                return;
+            }
+        }
+
+        private void DisableButtons()
+        {
+            foreach (var b in btnPieces)
+            {
+                b.Enabled = false;
+            }
+        }
+
+        private void ShowMsg(string msg)
+        {
+            if (firstMessage)
+            {
+                MessageBox.Show(msg);
+                firstMessage = false;
+            }
+        }
+
+        /*
+        Retorna 0 se a partida está em andamento,
+            1 se você ganhou,
+            2 se o adversário ganhou,
+            3 se deu erro!
+             */
+        private int GetWinnerGame()
+        {
+            List<string> dadosWs = new List<string>();
+            dadosWs.Add(idGame);
+            dadosWs.Add(idPlayer);
+            string result = RequisicoesRestWS.CustodiaRequisicao(WsUrlManager.GetUrl("/is-winner"), dadosWs);
+
+            if (String.IsNullOrEmpty(result))
+            {
+                ShowMsg("Falha ao obter o Ganhador, vc!");
+                return 3;
+            }
+
+            if (Convert.ToBoolean(result))
+            {
+                return 1;
+            } else
+            {
+                dadosWs = new List<string>();
+                dadosWs.Add(idGame);
+                dadosWs.Add(idPlayer);
+                result = RequisicoesRestWS.CustodiaRequisicao(WsUrlManager.GetUrl("/is-winner"), dadosWs);
+
+                if (String.IsNullOrEmpty(result))
+                {
+                    ShowMsg("Falha ao obter o Ganhador, ele(a)!");
+                    return 3;
+                }
+
+                if (Convert.ToBoolean(result))
+                {
+                    return 2;
+                }
+                else
+                {
+                    return 0;
+                }
+            }
+        }
+
+        private void ManageLastPiece()
+        {
+            List<string> dadosWs = new List<string>();
+            dadosWs.Add(this.idGame);
+            string result = RequisicoesRestWS.CustodiaRequisicao(WsUrlManager.GetUrl("/get-last-played-piece"), dadosWs);
+
+            if (String.IsNullOrEmpty(result))
+            {
+                ShowMsg("Não foi possível pegar a última peça! Tente novamente, mais tarde!");
+                return;
+            }
+
+            PieceObject po = JsonConvert.DeserializeObject<PieceObject>(result);
+
+        }
+
+        private void AddBodyGame(PieceObject po, String es)
+        {
+            if (po.Equals(lastPiece))
+            {
+                return;
+            }
+
+
+        }
 
         public fmdomino(string idGame, string idPlayer, string idOpponent)
         {
@@ -38,6 +176,10 @@ namespace engsoft3
             this.idGame = idGame;
             this.idPlayer = idPlayer;
             this.idOpponent = idOpponent;
+            aTimer.Elapsed += new ElapsedEventHandler(OnTimedEvent);
+            aTimer.Interval = 1000;
+            aTimer.Enabled = true;
+            this.lblStatus.Text = "Andamento!";
         }
 
         private byte[] GetImageContent(int id_cip, int faceA, int faceB)
@@ -134,23 +276,454 @@ namespace engsoft3
             return bmp;
         }
 
-        private void DrawTile(PieceObject po)
+        private void AddPieceToPlayer(PieceObject piece)
         {
+            Point newLoc = new Point(top, left);
+            top += 55;
+            Button b = new Button();
+
+            dic_but_po[b] = piece;
+
+            b.Size = new Size(30, 40);
+            b.Location = newLoc;
+            b.Click += (s, ne) => {
+                PieceObject po = dic_but_po[b];
+                MessageBox.Show("Voce quer jogar a peça: " + po.faceA + "-" + po.faceB);
+
+                string result;
+                if (extremoA != -1)
+                {
+                    string escolha = cbBChoice.SelectedValue.ToString();
+                    if (escolha.Equals("Direita"))
+                    {
+                        List<string> dadosWs = new List<string>();
+                        dadosWs.Add(idGame);
+                        dadosWs.Add(idPlayer);
+                        result = RequisicoesRestWS.CustodiaRequisicao(WsUrlManager.GetUrl("/connect"), dadosWs);
+                    }
+                    else if (escolha.Equals("Esquerda"))
+                    {
+                        List<string> dadosWs = new List<string>();
+                        result = RequisicoesRestWS.CustodiaRequisicao(WsUrlManager.GetUrl("/connect"), dadosWs);
+                    }
+                    else
+                    {
+                        MessageBox.Show("Escolha um sentido: Direita ou Esquerda!");
+                        return;
+                    }
+                }
+                else
+                {
+                    List<string> dadosWs = new List<string>();
+                    dadosWs.Add(idGame);
+                    dadosWs.Add(idPlayer);
+                    dadosWs.Add(po.faceA.ToString());
+                    dadosWs.Add(po.faceB.ToString());
+                    dadosWs.Add("A");
+                    result = RequisicoesRestWS.CustodiaRequisicao(WsUrlManager.GetUrl("/play"), dadosWs);
+                }
+
+                if (String.IsNullOrEmpty(result))
+                {
+                    MessageBox.Show("Não foi possível jogar-se! Tente novamente, mais tarde!");
+                    return;
+                }
+
+                if (Convert.ToBoolean(result))
+                {
+                    this.DrawTile(po);
+
+                    if (!this.initialized)
+                    {
+                        this.initialized = true;
+                    }
+
+                    Controls.Remove(b);
+                    btnPieces.Remove(b);
+
+                    if (btnPieces.Count() > 0)
+                    {
+                        Button lb = btnPieces.Last();
+                        lb.Location = b.Location;
+                    }
+                }
+            };
+
+            if (b.Location.X < 850)
+            {
+                newLoc.Offset(b.Height + 10, 0);
+            }
+            else
+            {
+                newLoc = new Point(150, 350);
+                newLoc.Offset(0, b.Height + 25);
+            }
+
+            byte[] dadosImg = this.GetImageContent(this.cip.ID, piece.faceA, piece.faceB);
+            MemoryStream ms = new MemoryStream(dadosImg);
+            Image img = Image.FromStream(ms);
+            b.BackgroundImage = this.ResizeImage(img, b.Size);
+            b.BackgroundImageLayout = ImageLayout.Stretch;
+            b.ImageAlign = ContentAlignment.MiddleRight;
+            b.TextAlign = ContentAlignment.MiddleLeft;
+            Controls.Add(b);
+            btnPieces.Add(b);
+        }
+
+        private void btnBuyPiece_Click(object sender, EventArgs e)
+        {
+            List<string> dadosWs = new List<string>();
+            dadosWs.Add(this.idGame);
+            dadosWs.Add(this.idPlayer);
+            string result = RequisicoesRestWS.CustodiaRequisicao(WsUrlManager.GetUrl("/buy"), dadosWs);
+
+            if (String.IsNullOrEmpty(result))
+            {
+                MessageBox.Show("Não foi possível pegar as suas peças! Tente novamente, mais tarde!");
+                return;
+            }
+
+            PieceObject po = JsonConvert.DeserializeObject<PieceObject>(result);
+            this.AddPieceToPlayer(po);
+        }
+
+        private void DrawTile(PieceObject po, string valor)
+        {
+            bool equal = po.faceA == po.faceB;
             PictureBox pb1 = new PictureBox();
             byte[] dadosImg = this.GetImageContent(this.cip.ID, po.faceA, po.faceB);
             MemoryStream ms = new MemoryStream(dadosImg);
             Image img = Image.FromStream(ms);
 
-            if (po.faceA != po.faceB)
+            Size size = new Size(46, 86);
+            img = ResizeImage(img, size);
+
+            if (!equal)
             {
                 img = this.RotateImage90Degrees(img);
             }
-            
-            Point newLoc = new Point(topBody, leftBody);
+
+            Point newLoc = new Point(leftBody_left, topBody_left);
             pb1.Image = img;
             pb1.Size = img.Size;
-            pb1.SizeMode = PictureBoxSizeMode.AutoSize;
-            pb1.Location = newLoc;
+
+            if (!this.initialized)
+            {
+                pb1.Location = newLoc;
+                esquerdaEqual = direitaEqual = equal;
+            }
+            else
+            {
+
+                //string valor = (string)cbBChoice.SelectedItem;
+
+                if (String.IsNullOrEmpty(valor))
+                {
+                    valor = "Esquerda";
+                }
+
+                if (valor.Equals("Esquerda"))
+                {
+                    // Segue a rota original!
+                    if (esquerdaState == 0)
+                    {
+                        if (!equal)
+                        {
+                            if (esquerdaEqual)
+                            {
+                                newLoc.Offset(-img.Width, 17);
+                            }
+                            else
+                            {
+                                newLoc.Offset(-img.Width, 0);
+                            }
+                        }
+                        else
+                        {
+                            newLoc.Offset(-46, -17);
+                        }
+
+                        if (newLoc.X < 0)
+                        {
+                            if (!equal)
+                            {
+                                img = this.RotateImage90Degrees(img);
+                                pb1.Image = img;
+                                pb1.Size = img.Size;
+                            }
+
+                            if (!equal)
+                            {
+                                if (esquerdaEqual)
+                                {
+                                    MessageBox.Show("Passando onde eu quero! Equal!");
+                                    newLoc.Offset(82, 67);
+                                }
+                                else
+                                {
+                                    MessageBox.Show("Passando onde eu quero! Diferente!");
+                                    newLoc.Offset(82, 44);
+                                }
+                            }
+                            else
+                            {
+                                newLoc.Offset(28, 64);
+                            }
+                            MessageBox.Show("Mudando esquerdaState para: 1.");
+                            esquerdaState = 1;
+                            firstEsquerdaState1 = true;
+                        }
+                    }
+                    else if (esquerdaState == 1) // Desce
+                    {
+                        if (!equal || !firstEsquerdaState1)
+                        {
+                            img = this.RotateImage90Degrees(img);
+                            pb1.Image = img;
+                            pb1.Size = img.Size;
+                        }
+
+                        if (!equal)
+                        {
+                            if (esquerdaEqual)
+                            {
+                                if (firstEsquerdaState1 == true)
+                                {
+                                    newLoc.Offset(-15, 74);
+                                }
+                                else
+                                {
+                                    newLoc.Offset(0, 74);
+                                }
+                            }
+                            else
+                            {
+                                newLoc.Offset(0, 74);
+                            }
+                        }
+                        else
+                        {
+                            newLoc.Offset(15, 74);
+                        }
+
+                        if (newLoc.Y > 75)
+                        {
+                            MessageBox.Show("Mudando esquerdaState para: 2.");
+                            newLoc.Offset(0, 10);
+                            esquerdaState = 2;
+                            firstEsquerdaState2 = true;
+                        }
+
+                        if (firstEsquerdaState1 == true)
+                        {
+                            firstEsquerdaState1 = false;
+                        }
+                    }
+                    else if (esquerdaState == 2) // Segue a rota invertida
+                    {
+                        if (!equal)
+                        {
+                            if (firstEsquerdaState2)
+                            {
+                                if (esquerdaEqual)
+                                {
+                                    newLoc.Offset(img.Width, 17);
+                                }
+                                else
+                                {
+                                    newLoc.Offset(45, 29);
+                                }
+
+                                firstEsquerdaState2 = false;
+                            }
+                            else
+                            {
+                                if (esquerdaEqual)
+                                {
+                                    MessageBox.Show("Passando por esquerdaEqual!");
+                                    newLoc.Offset(45, 17);
+                                }
+                                else
+                                {
+                                    MessageBox.Show("Passando por not esquerdaEqual!");
+                                    newLoc.Offset(img.Width, 0);
+                                }
+                            }
+
+                        }
+                        else
+                        {
+                            if (firstEsquerdaState2)
+                            {
+                                img = this.RotateImage90Degrees(img);
+                                pb1.Image = img;
+                                pb1.Size = img.Size;
+                                newLoc.Offset(55, 40);
+                                firstEsquerdaState2 = false;
+                                equal = false;
+                            }
+                            else
+                            {
+                                newLoc.Offset(84, -16);
+                            }
+                        }
+                    }
+                    esquerdaEqual = equal;
+                    leftBody_left = newLoc.X;
+                    topBody_left = newLoc.Y;
+                }
+                else if (valor.Equals("Direita"))
+                {
+                    newLoc = new Point(leftBody_right, topBody_right);
+                    // Segue a rota original!
+                    if (direitaState == 0)
+                    {
+                        if (topBody_right == 100 && leftBody_right == 450)
+                        {
+                            newLoc.Offset(45, 17);
+                        }
+                        else if (!equal)
+                        {
+                            if (direitaEqual)
+                            {
+                                MessageBox.Show("Passando apos equal... direita estado 0");
+                                newLoc.Offset(79, 17);
+                            }
+                            else
+                            {
+                                newLoc.Offset(img.Width, 0);
+                            }
+                        }
+                        else
+                        {
+                            MessageBox.Show("Passando equal direita estado 0...");
+                            newLoc.Offset(85, -17);
+                        }
+
+                        if (newLoc.X > 850)
+                        {
+                            if (!equal)
+                            {
+                                img = this.RotateImage90Degrees(img);
+                                pb1.Image = img;
+                                pb1.Size = img.Size;
+                            }
+
+                            if (!equal)
+                            {
+                                if (direitaEqual)
+                                {
+                                    newLoc.Offset(-82, 67);
+                                }
+                                else
+                                {
+                                    newLoc.Offset(-82, 44);
+                                }
+                            }
+                            else
+                            {
+                                newLoc.Offset(-28, 64);
+                            }
+                            direitaState = 1;
+                        }
+                    }
+                    else if (direitaState == 1) // Desce
+                    {
+                        if (!equal || !firstDireitaState1)
+                        {
+                            img = this.RotateImage90Degrees(img);
+                            pb1.Image = img;
+                            pb1.Size = img.Size;
+                        }
+
+                        if (!equal)
+                        {
+                            if (direitaEqual)
+                            {
+                                newLoc.Offset(0, 74);
+                            }
+                            else
+                            {
+                                if (firstDireitaState1 == true)
+                                {
+                                    MessageBox.Show("Passando por direitaState 1 ... equal... firstDireitaState1...");
+                                    newLoc.Offset(45, 74);
+                                }
+                                else
+                                {
+                                    newLoc.Offset(0, 74);
+                                }
+                            }
+                        }
+                        else
+                        {
+                            newLoc.Offset(0, 74);
+                        }
+
+                        if (newLoc.Y > 75)
+                        {
+                            newLoc.Offset(0, 10);
+                            direitaState = 2;
+                            firstDireitaState2 = true;
+                        }
+
+                        if (firstDireitaState1 == true)
+                        {
+                            firstDireitaState1 = false;
+                        }
+                    }
+                    else if (direitaState == 2) // Segue a rota invertida
+                    {
+                        if (!equal)
+                        {
+                            if (firstDireitaState2)
+                            {
+                                if (direitaEqual)
+                                {
+                                    newLoc.Offset(-img.Width, 17);
+                                }
+                                else
+                                {
+                                    newLoc.Offset(-85, 29);
+                                }
+
+                                firstDireitaState2 = false;
+                            }
+                            else
+                            {
+                                if (direitaEqual)
+                                {
+                                    newLoc.Offset(-85, 17);
+                                }
+                                else
+                                {
+                                    newLoc.Offset(-img.Width, 0);
+                                }
+                            }
+                        }
+                        else
+                        {
+                            if (firstDireitaState2)
+                            {
+                                img = this.RotateImage90Degrees(img);
+                                pb1.Image = img;
+                                pb1.Size = img.Size;
+                                newLoc.Offset(-80, 30);
+                                firstEsquerdaState2 = false;
+                            }
+                            else
+                            {
+                                newLoc.Offset(-45, -16);
+                            }
+                        }
+                    }
+                    direitaEqual = equal;
+                    leftBody_right = newLoc.X;
+                    topBody_right = newLoc.Y;
+                }
+                pb1.Location = newLoc;
+                MessageBox.Show("My Location x is: " + newLoc.X);
+            }
 
             Controls.Add(pb1);
         }
@@ -200,73 +773,7 @@ namespace engsoft3
 
             foreach(var piece in lista)
             {
-                Point newLoc = new Point(top, left);
-                top += 55;
-                Button b = new Button();
-
-                dic_but_po[b] = piece;
-
-                b.Size = new Size(50, 90);
-                b.Location = newLoc;
-                b.Click += (s, ne) => {
-                    PieceObject po = dic_but_po[b];
-                    MessageBox.Show("Voce quer jogar a peça: " + po.faceA + "-" + po.faceB);
-
-                    string result;
-                    if (extremoA != -1)
-                    {
-                        string escolha = cbBChoice.SelectedValue.ToString();
-                        if (escolha.Equals("Direita"))
-                        {
-                            List<string> dadosWs = new List<string>();
-                            dadosWs.Add(idGame);
-                            dadosWs.Add(idPlayer);
-                            result = RequisicoesRestWS.CustodiaRequisicao(WsUrlManager.GetUrl("/connect"), dadosWs);
-                        }
-                        else if (escolha.Equals("Esquerda"))
-                        {
-                            List<string> dadosWs = new List<string>();
-                            result = RequisicoesRestWS.CustodiaRequisicao(WsUrlManager.GetUrl("/connect"), dadosWs);
-                        }
-                        else
-                        {
-                            MessageBox.Show("Escolha um sentido: Direita ou Esquerda!");
-                            return;
-                        }
-                    }
-                    else 
-                    {
-                        List<string> dadosWs = new List<string>();
-                        dadosWs.Add(idGame);
-                        dadosWs.Add(idPlayer);
-                        dadosWs.Add(po.faceA.ToString());
-                        dadosWs.Add(po.faceB.ToString());
-                        dadosWs.Add("A");
-                        result = RequisicoesRestWS.CustodiaRequisicao(WsUrlManager.GetUrl("/play"), dadosWs);
-                    }
-                    
-                    if (String.IsNullOrEmpty(result))
-                    {
-                        MessageBox.Show("Não foi possível jogar-se! Tente novamente, mais tarde!");
-                        return;
-                    }
-
-                    if (Convert.ToBoolean(result))
-                    {
-                        this.DrawTile(po);
-                    }
-                };
-
-                newLoc.Offset(b.Height + 10, 0);
-
-                byte[] dadosImg = this.GetImageContent(this.cip.ID, piece.faceA, piece.faceB);
-                MemoryStream ms = new MemoryStream(dadosImg);
-                Image img = Image.FromStream(ms);
-                b.BackgroundImage = this.ResizeImage(img, b.Size);
-                b.BackgroundImageLayout = ImageLayout.Stretch;
-                b.ImageAlign = ContentAlignment.MiddleRight;
-                b.TextAlign = ContentAlignment.MiddleLeft;                
-                Controls.Add(b);
+                this.AddPieceToPlayer(piece);
             }
         }
     }
