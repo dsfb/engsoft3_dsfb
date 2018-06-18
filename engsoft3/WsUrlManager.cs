@@ -19,7 +19,7 @@ namespace engsoft3
         */
         
         public const string address = "http://localhost";
-        public const string port = "8080";
+        public const string port = "10000";
         
         public const string preSufixo = "/DominoWebService/domino";
         //public const string preSufixo = "/domino";
@@ -39,7 +39,6 @@ namespace engsoft3
 
             sb.Append(sufixo);
 
-            MessageBox.Show("Url: " + sb);
             return sb.ToString();
         }
     }

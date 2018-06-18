@@ -20,7 +20,7 @@ namespace engsoft3
         {
             this.idPlayer = idPlayer;
             TimeSpan startTimeSpan = TimeSpan.Zero;
-            TimeSpan periodTimeSpan = TimeSpan.FromSeconds(30);
+            TimeSpan periodTimeSpan = TimeSpan.FromSeconds(5);
 
             timer = new System.Threading.Timer((e) =>
             {

@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Timers;
 using System.Windows.Forms;
 
 namespace engsoft3
@@ -13,11 +14,50 @@ namespace engsoft3
     public partial class FormMainScreen : Form
     {
         private string idPlayer;
+        private string idGame = null;
+        private System.Timers.Timer aTimer;
         public FormMainScreen(string idPlayer)
         {
             InitializeComponent();
             this.idPlayer = idPlayer;
             NewGameRequestManager.GetInstance(Convert.ToInt32(this.idPlayer));
+            aTimer = new System.Timers.Timer();
+            aTimer.Elapsed += new ElapsedEventHandler(OnTimedEvent);
+            aTimer.Interval = 1000;
+            aTimer.Enabled = true;
+        }
+
+        // Specify what you want to happen when the Elapsed event is raised.
+        private void OnTimedEvent(object source, ElapsedEventArgs e)
+        {
+            using (var db = new dominoeng3Entities())
+            {
+                int id = Convert.ToInt32(idPlayer);
+                var query = from u in db.partidas
+                            where u.player1 == id && (u.estado == 0 || u.estado == 1)
+                            select u;
+
+                if (query.Count() > 0)
+                {
+                    partida p = query.First();
+                    if (p.estado == 0)
+                    {
+                        idGame = Convert.ToString(p.ID);
+                    }
+                    else if (p.estado == 1)
+                    {
+                        if (String.IsNullOrEmpty(idGame))
+                        {
+                            idGame = Convert.ToString(p.ID);
+                        }
+
+                        if (idGame.Equals(Convert.ToString(p.ID)))
+                        {
+                            MessageBox.Show("Seu pedido de jogo foi aceito! Você pode jogar agora!");
+                        }
+                    }
+                }
+            }
         }
 
         private void btnRankings_Click(object sender, EventArgs e)

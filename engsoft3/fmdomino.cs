@@ -178,6 +178,18 @@ namespace engsoft3
             }
         }
 
+        private string GetSelectedDirectionComboBoxValue()
+        {
+            try
+            {
+                return cbBChoice.SelectedValue.ToString();
+            }
+            catch (NullReferenceException)
+            {
+                return "Esquerda";
+            }
+        }
+
         private void ManageLastPiece()
         {
             List<string> dadosWs = new List<string>();
@@ -245,7 +257,10 @@ namespace engsoft3
 
                     if (query.Count() == 0)
                     {
-                        MessageBox.Show("Opa! Não foi possível carregar a imagem desejada! Id_cip: " + id_cip + " ,faces: " + faceA + "-" + faceB);
+                        if (faceA != -1 || faceB != -1)
+                        {
+                            ShowMsg("Opa! Não foi possível carregar a imagem desejada! Id_cip: " + id_cip + " ,faces: " + faceA + "-" + faceB);
+                        }
                         return new byte[] { };
                     }
                 }
@@ -340,7 +355,7 @@ namespace engsoft3
                     string result;
                     if (extremoA != -1)
                     {
-                        string escolha = cbBChoice.SelectedValue.ToString();
+                        string escolha = this.GetSelectedDirectionComboBoxValue();
                         if (escolha.Equals("Direita"))
                         {
                             List<string> dadosWs = new List<string>();
@@ -378,7 +393,13 @@ namespace engsoft3
 
                     if (Convert.ToBoolean(result))
                     {
-                        this.DrawTile(po, cbBChoice.SelectedValue.ToString());
+                        string escolha = this.GetSelectedDirectionComboBoxValue();
+                        if (String.IsNullOrEmpty(escolha))
+                        {
+                            escolha = "Esquerda";
+                        }
+
+                        this.DrawTile(po, escolha);
 
                         if (!this.initialized)
                         {
