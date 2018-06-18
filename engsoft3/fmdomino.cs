@@ -54,6 +54,24 @@ namespace engsoft3
             ManageWinnerGame(winnerGame);
 
             ManageLastPiece();
+
+            ManageNumTilesEnemy();
+        }
+
+        private void ManageNumTilesEnemy()
+        {
+            List<string> dadosWs = new List<string>();
+            dadosWs.Add(idGame);
+            dadosWs.Add(idPlayer);
+            string result = RequisicoesRestWS.CustodiaRequisicao(WsUrlManager.GetUrl("/get-num-tiles-enemy"), dadosWs);
+
+            if (String.IsNullOrEmpty(result))
+            {
+                ShowMsg("Falha ao obter o número de peças do adversário!");
+                return;
+            }
+
+            lblPecaAdvers.Text = result;
         }
 
         private void ManageWinnerGame(int winnerGame)
@@ -314,65 +332,76 @@ namespace engsoft3
             b.Size = new Size(30, 40);
             b.Location = newLoc;
             b.Click += (s, ne) => {
-                PieceObject po = dic_but_po[b];
-                MessageBox.Show("Voce quer jogar a peça: " + po.faceA + "-" + po.faceB);
-
-                string result;
-                if (extremoA != -1)
+                if (CanPlayAlone())
                 {
-                    string escolha = cbBChoice.SelectedValue.ToString();
-                    if (escolha.Equals("Direita"))
+                    PieceObject po = dic_but_po[b];
+                    MessageBox.Show("Voce quer jogar a peça: " + po.faceA + "-" + po.faceB);
+
+                    string result;
+                    if (extremoA != -1)
+                    {
+                        string escolha = cbBChoice.SelectedValue.ToString();
+                        if (escolha.Equals("Direita"))
+                        {
+                            List<string> dadosWs = new List<string>();
+                            dadosWs.Add(idGame);
+                            dadosWs.Add(idPlayer);
+                            result = RequisicoesRestWS.CustodiaRequisicao(WsUrlManager.GetUrl("/connect"), dadosWs);
+                        }
+                        else if (escolha.Equals("Esquerda"))
+                        {
+                            List<string> dadosWs = new List<string>();
+                            result = RequisicoesRestWS.CustodiaRequisicao(WsUrlManager.GetUrl("/connect"), dadosWs);
+                        }
+                        else
+                        {
+                            MessageBox.Show("Escolha um sentido: Direita ou Esquerda!");
+                            return;
+                        }
+                    }
+                    else
                     {
                         List<string> dadosWs = new List<string>();
                         dadosWs.Add(idGame);
                         dadosWs.Add(idPlayer);
-                        result = RequisicoesRestWS.CustodiaRequisicao(WsUrlManager.GetUrl("/connect"), dadosWs);
+                        dadosWs.Add(po.faceA.ToString());
+                        dadosWs.Add(po.faceB.ToString());
+                        dadosWs.Add("A");
+                        result = RequisicoesRestWS.CustodiaRequisicao(WsUrlManager.GetUrl("/play"), dadosWs);
                     }
-                    else if (escolha.Equals("Esquerda"))
+
+                    if (String.IsNullOrEmpty(result))
                     {
-                        List<string> dadosWs = new List<string>();
-                        result = RequisicoesRestWS.CustodiaRequisicao(WsUrlManager.GetUrl("/connect"), dadosWs);
-                    }
-                    else
-                    {
-                        MessageBox.Show("Escolha um sentido: Direita ou Esquerda!");
+                        MessageBox.Show("Não foi possível jogar-se! Tente novamente, mais tarde!");
                         return;
                     }
+
+                    if (Convert.ToBoolean(result))
+                    {
+                        this.DrawTile(po, cbBChoice.SelectedValue.ToString());
+
+                        if (!this.initialized)
+                        {
+                            this.initialized = true;
+                        }
+
+                        Controls.Remove(b);
+                        btnPieces.Remove(b);
+
+                        if (btnPieces.Count() > 0)
+                        {
+                            Button lb = btnPieces.Last();
+                            lb.Location = b.Location;
+                        }
+                    }
+                }
+                else if (CanPlayBuying())
+                {
+                    MessageBox.Show("Compre novas peças!");
                 }
                 else
                 {
-                    List<string> dadosWs = new List<string>();
-                    dadosWs.Add(idGame);
-                    dadosWs.Add(idPlayer);
-                    dadosWs.Add(po.faceA.ToString());
-                    dadosWs.Add(po.faceB.ToString());
-                    dadosWs.Add("A");
-                    result = RequisicoesRestWS.CustodiaRequisicao(WsUrlManager.GetUrl("/play"), dadosWs);
-                }
-
-                if (String.IsNullOrEmpty(result))
-                {
-                    MessageBox.Show("Não foi possível jogar-se! Tente novamente, mais tarde!");
-                    return;
-                }
-
-                if (Convert.ToBoolean(result))
-                {
-                    this.DrawTile(po, cbBChoice.SelectedValue.ToString());
-
-                    if (!this.initialized)
-                    {
-                        this.initialized = true;
-                    }
-
-                    Controls.Remove(b);
-                    btnPieces.Remove(b);
-
-                    if (btnPieces.Count() > 0)
-                    {
-                        Button lb = btnPieces.Last();
-                        lb.Location = b.Location;
-                    }
+                    MessageBox.Show("Aguarde a sua vez!");
                 }
             };
 
@@ -397,21 +426,60 @@ namespace engsoft3
             btnPieces.Add(b);
         }
 
-        private void btnBuyPiece_Click(object sender, EventArgs e)
+        private Boolean CanPlayAlone()
         {
             List<string> dadosWs = new List<string>();
             dadosWs.Add(this.idGame);
             dadosWs.Add(this.idPlayer);
-            string result = RequisicoesRestWS.CustodiaRequisicao(WsUrlManager.GetUrl("/buy"), dadosWs);
+            string result = RequisicoesRestWS.CustodiaRequisicao(WsUrlManager.GetUrl("/can-play"), dadosWs);
 
             if (String.IsNullOrEmpty(result))
             {
-                MessageBox.Show("Não foi possível pegar as suas peças! Tente novamente, mais tarde!");
-                return;
+                ShowMsg("Não foi possível ver se posso jogar sem comprar peças!");
+                return false;
             }
 
-            PieceObject po = JsonConvert.DeserializeObject<PieceObject>(result);
-            this.AddPieceToPlayer(po);
+            return Convert.ToBoolean(result);
+        }
+
+        private Boolean CanPlayBuying()
+        {
+            List<string> dadosWs = new List<string>();
+            dadosWs.Add(this.idGame);
+            dadosWs.Add(this.idPlayer);
+            string result = RequisicoesRestWS.CustodiaRequisicao(WsUrlManager.GetUrl("/can-play-buying"), dadosWs);
+
+            if (String.IsNullOrEmpty(result))
+            {
+                ShowMsg("Não foi possível ver se posso jogar comprando peças!");
+                return false;
+            }
+
+            return Convert.ToBoolean(result);
+        }
+
+        private void btnBuyPiece_Click(object sender, EventArgs e)
+        {
+            if (!CanPlayAlone() && CanPlayBuying())
+            {
+                List<string> dadosWs = new List<string>();
+                dadosWs.Add(this.idGame);
+                dadosWs.Add(this.idPlayer);
+                string result = RequisicoesRestWS.CustodiaRequisicao(WsUrlManager.GetUrl("/buy"), dadosWs);
+
+                if (String.IsNullOrEmpty(result))
+                {
+                    ShowMsg("Não foi possível comprar uma nova peça!");
+                    return;
+                }
+
+                PieceObject po = JsonConvert.DeserializeObject<PieceObject>(result);
+                this.AddPieceToPlayer(po);
+            } 
+            else
+            {
+                MessageBox.Show("Ação não permitida!");
+            }
         }
 
         private void DrawTile(PieceObject po, string valor)
