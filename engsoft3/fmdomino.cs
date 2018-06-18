@@ -120,47 +120,39 @@ namespace engsoft3
             }
         }
 
-        public Image RotateImage(Image img, float rotationAngle)
+        private Image RotateImage90Degrees(Image img)
         {
-            //create an empty Bitmap image
-            Bitmap bmp = new Bitmap(img.Width, img.Height);
+            var bmp = new Bitmap(img);
 
-            //turn the Bitmap into a Graphics object
-            Graphics gfx = Graphics.FromImage(bmp);
+            using (Graphics gfx = Graphics.FromImage(bmp))
+            {
+                gfx.Clear(Color.White);
+                gfx.DrawImage(img, 0, 0, img.Width, img.Height);
+            }
 
-            //now we set the rotation point to the center of our image
-            gfx.TranslateTransform((float)bmp.Width / 2, (float)bmp.Height / 2);
-
-            //now rotate the image
-            gfx.RotateTransform(rotationAngle);
-
-            gfx.TranslateTransform(-(float)bmp.Width / 2, -(float)bmp.Height / 2);
-
-            //set the InterpolationMode to HighQualityBicubic so to ensure a high
-            //quality image once it is transformed to the specified size
-            gfx.InterpolationMode = InterpolationMode.HighQualityBicubic;
-
-            //now draw our new image onto the graphics object
-            gfx.DrawImage(img, new Point(0, 0));
-
-            //dispose of our Graphics object
-            gfx.Dispose();
-
-            //return the image
+            bmp.RotateFlip(RotateFlipType.Rotate90FlipNone);
             return bmp;
         }
 
-        private void DrawTile(PieceObject po, Button b)
+        private void DrawTile(PieceObject po)
         {
-            Image bimg = b.BackgroundImage;
+            PictureBox pb1 = new PictureBox();
+            byte[] dadosImg = this.GetImageContent(this.cip.ID, po.faceA, po.faceB);
+            MemoryStream ms = new MemoryStream(dadosImg);
+            Image img = Image.FromStream(ms);
+
             if (po.faceA != po.faceB)
-            { 
-                bimg = this.RotateImage(bimg, 90);
-            }            
-            b.BackgroundImage = bimg;
-            Point newLoc = new Point(topBody, leftBody);
-            b.Location = newLoc;
+            {
+                img = this.RotateImage90Degrees(img);
+            }
             
+            Point newLoc = new Point(topBody, leftBody);
+            pb1.Image = img;
+            pb1.Size = img.Size;
+            pb1.SizeMode = PictureBoxSizeMode.AutoSize;
+            pb1.Location = newLoc;
+
+            Controls.Add(pb1);
         }
 
         private void fmdomino_Load(object sender, EventArgs e)
@@ -261,7 +253,7 @@ namespace engsoft3
 
                     if (Convert.ToBoolean(result))
                     {
-                        this.DrawTile(po, b);
+                        this.DrawTile(po);
                     }
                 };
 
