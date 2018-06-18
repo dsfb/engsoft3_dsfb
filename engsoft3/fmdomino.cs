@@ -52,7 +52,8 @@ namespace engsoft3
         {
             int winnerGame = GetWinnerGame();
             ManageWinnerGame(winnerGame);
-            
+
+            ManageLastPiece();
         }
 
         private void ManageWinnerGame(int winnerGame)
@@ -119,6 +120,21 @@ namespace engsoft3
 
             if (Convert.ToBoolean(result))
             {
+                dadosWs = new List<string>();
+                dadosWs.Add(idGame);
+                result = RequisicoesRestWS.CustodiaRequisicao(WsUrlManager.GetUrl("/endgame"), dadosWs);
+
+                if (String.IsNullOrEmpty(result))
+                {
+                    ShowMsg("Falha ao fechar o Jogo!");
+                    return 3;
+                }
+
+                if (!Convert.ToBoolean(result))
+                {
+                    ShowMsg("Não foi possível fechar o jogo!");
+                }
+
                 return 1;
             } else
             {
@@ -158,6 +174,17 @@ namespace engsoft3
 
             PieceObject po = JsonConvert.DeserializeObject<PieceObject>(result);
 
+            dadosWs = new List<string>();
+            dadosWs.Add(this.idGame);
+            result = RequisicoesRestWS.CustodiaRequisicao(WsUrlManager.GetUrl("/get-last-extreme-side"), dadosWs);
+
+            if (String.IsNullOrEmpty(result))
+            {
+                ShowMsg("Não foi possível pegar o último lado! Tente novamente, mais tarde!");
+                return;
+            }
+            
+            this.AddBodyGame(po, result);
         }
 
         private void AddBodyGame(PieceObject po, String es)
@@ -167,7 +194,7 @@ namespace engsoft3
                 return;
             }
 
-
+            this.DrawTile(po, es);
         }
 
         public fmdomino(string idGame, string idPlayer, string idOpponent)
@@ -331,7 +358,7 @@ namespace engsoft3
 
                 if (Convert.ToBoolean(result))
                 {
-                    this.DrawTile(po);
+                    this.DrawTile(po, cbBChoice.SelectedValue.ToString());
 
                     if (!this.initialized)
                     {
