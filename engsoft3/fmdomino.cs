@@ -228,6 +228,21 @@ namespace engsoft3
             }
 
             this.DrawTile(po, es);
+
+            if (extremoA == -1)
+            {
+                extremoA = po.faceA;
+                extremoB = po.faceB;
+            } else
+            {
+                if (es.Equals("A"))
+                {
+                    extremoA = po.faceB;
+                } else if (es.Equals("B"))
+                {
+                    extremoA = po.faceA;
+                }
+            }
         }
 
         public fmdomino(string idGame, string idPlayer, string idOpponent)
@@ -365,12 +380,54 @@ namespace engsoft3
                             List<string> dadosWs = new List<string>();
                             dadosWs.Add(idGame);
                             dadosWs.Add(idPlayer);
-                            result = RequisicoesRestWS.CustodiaRequisicao(WsUrlManager.GetUrl("/connect"), dadosWs);
+                            dadosWs.Add(po.faceA.ToString());
+                            dadosWs.Add(po.faceB.ToString());
+                            dadosWs.Add("A");
+                            result = RequisicoesRestWS.CustodiaRequisicao(WsUrlManager.GetUrl("/play"), dadosWs);
+
+                            if (String.IsNullOrEmpty(result))
+                            {
+                                MessageBox.Show("Não foi possível jogar-se! Tente novamente, mais tarde!");
+                                return;
+                            }
+
+                            if (!Convert.ToBoolean(result))
+                            {
+                                dadosWs = new List<string>();
+                                dadosWs.Add(idGame);
+                                dadosWs.Add(idPlayer);
+                                dadosWs.Add(po.faceB.ToString());
+                                dadosWs.Add(po.faceA.ToString());
+                                dadosWs.Add("A");
+                                result = RequisicoesRestWS.CustodiaRequisicao(WsUrlManager.GetUrl("/play"), dadosWs);
+                            }
                         }
                         else if (escolha.Equals("Esquerda"))
                         {
                             List<string> dadosWs = new List<string>();
-                            result = RequisicoesRestWS.CustodiaRequisicao(WsUrlManager.GetUrl("/connect"), dadosWs);
+                            dadosWs.Add(idGame);
+                            dadosWs.Add(idPlayer);
+                            dadosWs.Add(po.faceA.ToString());
+                            dadosWs.Add(po.faceB.ToString());
+                            dadosWs.Add("B");
+                            result = RequisicoesRestWS.CustodiaRequisicao(WsUrlManager.GetUrl("/play"), dadosWs);
+
+                            if (String.IsNullOrEmpty(result))
+                            {
+                                MessageBox.Show("Não foi possível jogar-se! Tente novamente, mais tarde!");
+                                return;
+                            }
+
+                            if (!Convert.ToBoolean(result))
+                            {
+                                dadosWs = new List<string>();
+                                dadosWs.Add(idGame);
+                                dadosWs.Add(idPlayer);
+                                dadosWs.Add(po.faceB.ToString());
+                                dadosWs.Add(po.faceA.ToString());
+                                dadosWs.Add("B");
+                                result = RequisicoesRestWS.CustodiaRequisicao(WsUrlManager.GetUrl("/play"), dadosWs);
+                            }
                         }
                         else
                         {
@@ -410,7 +467,18 @@ namespace engsoft3
                             this.initialized = true;
                         }
 
-                        Controls.Remove(b);
+                        if (this.InvokeRequired)
+                        {
+                            this.BeginInvoke((MethodInvoker)delegate ()
+                            {
+                                Controls.Remove(b);
+                            });
+                        }
+                        else
+                        {
+                            Controls.Remove(b);
+                        }
+                        
                         btnPieces.Remove(b);
 
                         if (btnPieces.Count() > 0)
@@ -447,7 +515,19 @@ namespace engsoft3
             b.BackgroundImageLayout = ImageLayout.Stretch;
             b.ImageAlign = ContentAlignment.MiddleRight;
             b.TextAlign = ContentAlignment.MiddleLeft;
-            Controls.Add(b);
+
+            if (this.InvokeRequired)
+            {
+                this.BeginInvoke((MethodInvoker)delegate ()
+                {
+                    Controls.Add(b);
+                });
+            }
+            else
+            {
+                Controls.Add(b);
+            }
+            
             btnPieces.Add(b);
         }
 
@@ -841,22 +921,23 @@ namespace engsoft3
                 pb1.Location = newLoc;
             }
 
-            Controls.Add(pb1);
-        }
-
-        private void DrawTile(PieceObject po, string valor)
-        {
+            
             if (this.InvokeRequired)
             {
                 this.BeginInvoke((MethodInvoker)delegate ()
                 {
-                    this.DrawTileSubRoutine(po, valor);
+                    Controls.Add(pb1);
                 });
             }
             else
             {
-                this.DrawTileSubRoutine(po, valor);
+                Controls.Add(pb1);
             }
+        }
+
+        private void DrawTile(PieceObject po, string valor)
+        {
+            this.DrawTileSubRoutine(po, valor);
         }
 
         private void fmdomino_Load(object sender, EventArgs e)
