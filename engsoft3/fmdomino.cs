@@ -371,8 +371,7 @@ namespace engsoft3
                 if (CanPlayAlone())
                 {
                     PieceObject po = dic_but_po[b];
-                    //MessageBox.Show("Voce quer jogar a peça: " + po.faceA + "-" + po.faceB);
-
+                    
                     string result;
                     if (extremoA != -1)
                     {

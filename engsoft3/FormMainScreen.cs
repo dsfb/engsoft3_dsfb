@@ -16,6 +16,7 @@ namespace engsoft3
         private string idPlayer;
         private string idGame = null;
         private System.Timers.Timer aTimer;
+        private bool showMePedido = true;
         public FormMainScreen(string idPlayer)
         {
             InitializeComponent();
@@ -55,7 +56,11 @@ namespace engsoft3
 
                         if (idGame.Equals(Convert.ToString(p.ID)))
                         {
-                            MessageBox.Show("Seu pedido de jogo foi aceito! Você pode jogar agora!");
+                            if (showMePedido)
+                            {
+                                MessageBox.Show("Seu pedido de jogo foi aceito! Você pode jogar agora!");
+                                showMePedido = false;
+                            }
                         }
                     }
                 }
