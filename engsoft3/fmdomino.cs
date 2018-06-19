@@ -47,6 +47,8 @@ namespace engsoft3
         private System.Timers.Timer aTimer = new System.Timers.Timer();
         private PieceObject lastPiece;
         private bool firstMessage = true;
+        private PosicaoPeca posicaoEsquerda = PosicaoPeca.original;
+        private PosicaoPeca posicaoDireita = PosicaoPeca.original;
 
         delegate void SetControlValueCallback(Control oControl, string propName, object propValue);
 
@@ -369,7 +371,7 @@ namespace engsoft3
                 if (CanPlayAlone())
                 {
                     PieceObject po = dic_but_po[b];
-                    MessageBox.Show("Voce quer jogar a peça: " + po.faceA + "-" + po.faceB);
+                    //MessageBox.Show("Voce quer jogar a peça: " + po.faceA + "-" + po.faceB);
 
                     string result;
                     if (extremoA != -1)
@@ -578,6 +580,7 @@ namespace engsoft3
                     return;
                 }
 
+                MessageBox.Show("Peça comprada com sucesso!");
                 PieceObject po = JsonConvert.DeserializeObject<PieceObject>(result);
                 this.AddPieceToPlayer(po);
             } 
@@ -587,10 +590,194 @@ namespace engsoft3
             }
         }
 
+        private PosicaoPeca GetPosicaoPecaRotate90(PosicaoPeca pp)
+        {
+            switch (pp)
+            {
+                case PosicaoPeca.original:
+                    return PosicaoPeca.esquerda;
+                case PosicaoPeca.esquerda:
+                    return PosicaoPeca.abaixo;
+                case PosicaoPeca.abaixo:
+                    return PosicaoPeca.direita;
+                case PosicaoPeca.direita:
+                    return PosicaoPeca.original;
+                default:
+                    return PosicaoPeca.original;
+            }
+        }
+
+        private PosicaoPeca ManageImageUnderConditions(Image img, int extremeA, int extremeB, PieceObject po,
+            PosicaoPeca lastPp, PosicaoPeca pp, String extremeSide)
+        {
+            PosicaoPeca newPp = pp;
+            Boolean equal = po.faceA == po.faceB;
+            switch (extremeSide)
+            {
+                case "A": // Direita
+                    switch (lastPp)
+                    {
+                        case PosicaoPeca.original:
+                        case PosicaoPeca.abaixo:
+                            switch (pp)
+                            {
+                                case PosicaoPeca.original:
+                                    if (!equal)
+                                    {
+                                        if (po.faceA == extremeA)
+                                        {
+                                            newPp = this.GetPosicaoPecaRotate90(newPp);
+                                        } else
+                                        {
+                                            newPp = this.GetPosicaoPecaRotate90(newPp);
+                                            newPp = this.GetPosicaoPecaRotate90(newPp);
+                                            newPp = this.GetPosicaoPecaRotate90(newPp);
+                                        }
+                                    }
+                                    break;
+                                case PosicaoPeca.esquerda:
+                                    if (po.faceA == extremeA)
+                                    {
+                                        
+                                    }
+                                    else
+                                    {
+                                        newPp = this.GetPosicaoPecaRotate90(newPp);
+                                        newPp = this.GetPosicaoPecaRotate90(newPp);
+                                    }
+                                    break;
+                                case PosicaoPeca.abaixo:
+                                    if (!equal)
+                                    {
+                                        if (po.faceB == extremeA)
+                                        {
+                                            newPp = this.GetPosicaoPecaRotate90(newPp);
+                                        } else
+                                        {
+                                            newPp = this.GetPosicaoPecaRotate90(newPp);
+                                            newPp = this.GetPosicaoPecaRotate90(newPp);
+                                            newPp = this.GetPosicaoPecaRotate90(newPp);
+                                        }
+                                    }
+                                    break;
+                                case PosicaoPeca.direita:
+                                    if (po.faceB == extremeA)
+                                    {
+
+                                    }
+                                    else
+                                    {
+                                        newPp = this.GetPosicaoPecaRotate90(newPp);
+                                        newPp = this.GetPosicaoPecaRotate90(newPp);
+                                    }
+                                    break;
+                            }
+                            break;
+                        case PosicaoPeca.esquerda:
+                            switch (pp)
+                            {
+                                case PosicaoPeca.original:
+                                    if (equal)
+                                    {
+
+                                    } else
+                                    {
+                                        if (po.faceA == extremeA)
+                                        {
+                                            newPp = this.GetPosicaoPecaRotate90(newPp);
+                                        } else
+                                        {
+                                            newPp = this.GetPosicaoPecaRotate90(newPp);
+                                            newPp = this.GetPosicaoPecaRotate90(newPp);
+                                            newPp = this.GetPosicaoPecaRotate90(newPp);
+                                        }
+                                    }
+                                    break;
+                                case PosicaoPeca.esquerda:
+                                    //if (face)
+                                    break;
+                                case PosicaoPeca.abaixo:
+                                    break;
+                                case PosicaoPeca.direita:
+                                    break;
+                            }
+                            break;
+                        case PosicaoPeca.direita:
+                            switch (pp)
+                            {
+                                case PosicaoPeca.original:
+                                    break;
+                                case PosicaoPeca.esquerda:
+                                    break;
+                                case PosicaoPeca.abaixo:
+                                    break;
+                                case PosicaoPeca.direita:
+                                    break;
+                            }
+                            break;
+                        default:
+                            break;
+                    }
+                    break;
+                case "B": // Esquerda
+                    switch (lastPp)
+                    {
+                        case PosicaoPeca.original:
+                        case PosicaoPeca.abaixo:
+                            switch (pp)
+                            {
+                                case PosicaoPeca.original:
+                                    break;
+                                case PosicaoPeca.esquerda:
+                                    break;
+                                case PosicaoPeca.abaixo:
+                                    break;
+                                case PosicaoPeca.direita:
+                                    break;
+                            }
+                            break;
+                        case PosicaoPeca.esquerda:
+                            switch (pp)
+                            {
+                                case PosicaoPeca.original:
+                                    break;
+                                case PosicaoPeca.esquerda:
+                                    break;
+                                case PosicaoPeca.abaixo:
+                                    break;
+                                case PosicaoPeca.direita:
+                                    break;
+                            }
+                            break;
+                        case PosicaoPeca.direita:
+                            switch (pp)
+                            {
+                                case PosicaoPeca.original:
+                                    break;
+                                case PosicaoPeca.esquerda:
+                                    break;
+                                case PosicaoPeca.abaixo:
+                                    break;
+                                case PosicaoPeca.direita:
+                                    break;
+                            }
+                            break;
+                        default:
+                            break;
+                    }
+                    break;
+                default:
+                    break;
+            }
+
+            return newPp;
+        }
+
         private void DrawTileSubRoutine(PieceObject po, string valor)
         {
             bool equal = po.faceA == po.faceB;
             PictureBox pb1 = new PictureBox();
+            PosicaoPeca pp = PosicaoPeca.original;
 
             if (po.faceA == -1 || po.faceB == -1)
             {
@@ -607,6 +794,7 @@ namespace engsoft3
             if (!equal)
             {
                 img = this.RotateImage90Degrees(img);
+                pp = this.GetPosicaoPecaRotate90(pp);
             }
 
             Point newLoc = new Point(leftBody_left, topBody_left);
@@ -620,9 +808,6 @@ namespace engsoft3
             }
             else
             {
-
-                //string valor = (string)cbBChoice.SelectedItem;
-
                 if (String.IsNullOrEmpty(valor))
                 {
                     valor = "Esquerda";
@@ -643,6 +828,7 @@ namespace engsoft3
                             {
                                 newLoc.Offset(-img.Width, 0);
                             }
+
                         }
                         else
                         {
@@ -654,6 +840,7 @@ namespace engsoft3
                             if (!equal)
                             {
                                 img = this.RotateImage90Degrees(img);
+                                pp = this.GetPosicaoPecaRotate90(pp);
                                 pb1.Image = img;
                                 pb1.Size = img.Size;
                             }
@@ -682,6 +869,7 @@ namespace engsoft3
                         if (!equal || !firstEsquerdaState1)
                         {
                             img = this.RotateImage90Degrees(img);
+                            pp = this.GetPosicaoPecaRotate90(pp);
                             pb1.Image = img;
                             pb1.Size = img.Size;
                         }
@@ -756,6 +944,7 @@ namespace engsoft3
                             if (firstEsquerdaState2)
                             {
                                 img = this.RotateImage90Degrees(img);
+                                pp = this.GetPosicaoPecaRotate90(pp);
                                 pb1.Image = img;
                                 pb1.Size = img.Size;
                                 newLoc.Offset(55, 40);
@@ -918,9 +1107,27 @@ namespace engsoft3
                     leftBody_right = newLoc.X;
                     topBody_right = newLoc.Y;
                 }
+
+                PosicaoPeca newPp = PosicaoPeca.original;
+                if (valor == "Esquerda")
+                {
+                    newPp = this.ManageImageUnderConditions(img, this.extremoA, this.extremoB, po,
+                       this.posicaoEsquerda, pp, "B");
+                } else if (valor == "Direita")
+                {
+                    newPp = this.ManageImageUnderConditions(img, this.extremoA, this.extremoB, po,
+                       this.posicaoDireita, pp, "B");
+                }
+                
+                while (pp != newPp)
+                {
+                    img = this.RotateImage90Degrees(img);
+                    pp = this.GetPosicaoPecaRotate90(pp);
+                }
+
+                pb1.Size = img.Size;
                 pb1.Location = newLoc;
             }
-
             
             if (this.InvokeRequired)
             {
@@ -983,7 +1190,7 @@ namespace engsoft3
                     }
                     else
                     {
-                        MessageBox.Show("Erro! Nenhum conjunto de imagem foi carregado!");
+                        ShowMsg("Erro! Nenhum conjunto de imagem foi carregado!");
                     }
                 }
 
@@ -996,7 +1203,7 @@ namespace engsoft3
                 }
                 else
                 {
-                    MessageBox.Show("Opa! Não existe ao menos uma imagem de tabuleiro cadastrada! O jogo não irá prosseguir!");
+                    ShowMsg("Opa! Não existe ao menos uma imagem de tabuleiro cadastrada! O jogo não irá prosseguir!");
                     return;
                 }
             }

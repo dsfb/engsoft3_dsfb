@@ -13,16 +13,14 @@ namespace engsoft3
          https://agora-vai.herokuapp.com/domino/connect
          http://localhost:10000/DominoWebService/domino/connect
          */
-         /*
-        public const string address = "https://agora-vai.herokuapp.com";
+         public const string address = "https://agora-vai.herokuapp.com";
         public const string port = "";
-        */
-        
+        /*
         public const string address = "http://localhost";
-        public const string port = "10000";
-        
-        public const string preSufixo = "/DominoWebService/domino";
-        //public const string preSufixo = "/domino";
+        public const string port = "8080";
+        */
+        //public const string preSufixo = "/DominoWebService/domino";
+        public const string preSufixo = "/domino";
 
         public static string GetUrl(string sufixo)
         {
