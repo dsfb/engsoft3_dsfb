@@ -73,6 +73,7 @@
             this.btnChooseSkin.TabIndex = 3;
             this.btnChooseSkin.Text = "Escolher Skins";
             this.btnChooseSkin.UseVisualStyleBackColor = true;
+            this.btnChooseSkin.Click += new System.EventHandler(this.btnChooseSkin_Click);
             // 
             // btnSeeRequest
             // 

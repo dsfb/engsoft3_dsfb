@@ -8,8 +8,8 @@ namespace engsoft3
 {
     public class RankingObject
     {
-        public int player;
-        public int vitorias;
-        public int partidas_jogadas;
+        public int player { get; set; }
+        public int vitorias { get; set; }
+        public int partidas_jogadas { get; set; }
     }
 }

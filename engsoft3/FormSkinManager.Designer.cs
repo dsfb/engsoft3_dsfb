@@ -29,15 +29,15 @@
         private void InitializeComponent()
         {
             this.label1 = new System.Windows.Forms.Label();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.pictureBoxFundoTab = new System.Windows.Forms.PictureBox();
+            this.cbBFundoTab = new System.Windows.Forms.ComboBox();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
-            this.comboBox2 = new System.Windows.Forms.ComboBox();
-            this.pictureBox2 = new System.Windows.Forms.PictureBox();
-            this.button1 = new System.Windows.Forms.Button();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
+            this.cbBSkinPeca = new System.Windows.Forms.ComboBox();
+            this.pictureBoxSkinPeca = new System.Windows.Forms.PictureBox();
+            this.btnSaveConfig = new System.Windows.Forms.Button();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxFundoTab)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxSkinPeca)).BeginInit();
             this.SuspendLayout();
             // 
             // label1
@@ -49,21 +49,22 @@
             this.label1.TabIndex = 0;
             this.label1.Text = "Escolha o seu skin favorito:";
             // 
-            // pictureBox1
+            // pictureBoxFundoTab
             // 
-            this.pictureBox1.Location = new System.Drawing.Point(29, 92);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(227, 112);
-            this.pictureBox1.TabIndex = 1;
-            this.pictureBox1.TabStop = false;
+            this.pictureBoxFundoTab.Location = new System.Drawing.Point(29, 92);
+            this.pictureBoxFundoTab.Name = "pictureBoxFundoTab";
+            this.pictureBoxFundoTab.Size = new System.Drawing.Size(227, 112);
+            this.pictureBoxFundoTab.TabIndex = 1;
+            this.pictureBoxFundoTab.TabStop = false;
             // 
-            // comboBox1
+            // cbBFundoTab
             // 
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(135, 56);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(121, 21);
-            this.comboBox1.TabIndex = 2;
+            this.cbBFundoTab.FormattingEnabled = true;
+            this.cbBFundoTab.Location = new System.Drawing.Point(135, 56);
+            this.cbBFundoTab.Name = "cbBFundoTab";
+            this.cbBFundoTab.Size = new System.Drawing.Size(121, 21);
+            this.cbBFundoTab.TabIndex = 2;
+            this.cbBFundoTab.SelectedValueChanged += new System.EventHandler(this.cbBFundoTab_SelectedValueChanged);
             // 
             // label2
             // 
@@ -83,49 +84,51 @@
             this.label3.TabIndex = 4;
             this.label3.Text = "Skin escolhido de peça:";
             // 
-            // comboBox2
+            // cbBSkinPeca
             // 
-            this.comboBox2.FormattingEnabled = true;
-            this.comboBox2.Location = new System.Drawing.Point(153, 219);
-            this.comboBox2.Name = "comboBox2";
-            this.comboBox2.Size = new System.Drawing.Size(103, 21);
-            this.comboBox2.TabIndex = 5;
+            this.cbBSkinPeca.FormattingEnabled = true;
+            this.cbBSkinPeca.Location = new System.Drawing.Point(153, 219);
+            this.cbBSkinPeca.Name = "cbBSkinPeca";
+            this.cbBSkinPeca.Size = new System.Drawing.Size(103, 21);
+            this.cbBSkinPeca.TabIndex = 5;
+            this.cbBSkinPeca.SelectedValueChanged += new System.EventHandler(this.cbBSkinPeca_SelectedValueChanged);
             // 
-            // pictureBox2
+            // pictureBoxSkinPeca
             // 
-            this.pictureBox2.Location = new System.Drawing.Point(29, 256);
-            this.pictureBox2.Name = "pictureBox2";
-            this.pictureBox2.Size = new System.Drawing.Size(227, 63);
-            this.pictureBox2.TabIndex = 6;
-            this.pictureBox2.TabStop = false;
+            this.pictureBoxSkinPeca.Location = new System.Drawing.Point(52, 256);
+            this.pictureBoxSkinPeca.Name = "pictureBoxSkinPeca";
+            this.pictureBoxSkinPeca.Size = new System.Drawing.Size(111, 63);
+            this.pictureBoxSkinPeca.TabIndex = 6;
+            this.pictureBoxSkinPeca.TabStop = false;
             // 
-            // button1
+            // btnSaveConfig
             // 
-            this.button1.Location = new System.Drawing.Point(29, 328);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(227, 23);
-            this.button1.TabIndex = 7;
-            this.button1.Text = "Salvar configurações";
-            this.button1.UseVisualStyleBackColor = true;
+            this.btnSaveConfig.Location = new System.Drawing.Point(29, 328);
+            this.btnSaveConfig.Name = "btnSaveConfig";
+            this.btnSaveConfig.Size = new System.Drawing.Size(227, 23);
+            this.btnSaveConfig.TabIndex = 7;
+            this.btnSaveConfig.Text = "Salvar configurações";
+            this.btnSaveConfig.UseVisualStyleBackColor = true;
+            this.btnSaveConfig.Click += new System.EventHandler(this.btnSaveConfig_Click);
             // 
             // FormSkinManager
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(284, 363);
-            this.Controls.Add(this.button1);
-            this.Controls.Add(this.pictureBox2);
-            this.Controls.Add(this.comboBox2);
+            this.Controls.Add(this.btnSaveConfig);
+            this.Controls.Add(this.pictureBoxSkinPeca);
+            this.Controls.Add(this.cbBSkinPeca);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
-            this.Controls.Add(this.comboBox1);
-            this.Controls.Add(this.pictureBox1);
+            this.Controls.Add(this.cbBFundoTab);
+            this.Controls.Add(this.pictureBoxFundoTab);
             this.Controls.Add(this.label1);
             this.Name = "FormSkinManager";
             this.Text = "FormSkinManager";
             this.Load += new System.EventHandler(this.FormSkinManager_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxFundoTab)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxSkinPeca)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -134,12 +137,12 @@
         #endregion
 
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.PictureBox pictureBox1;
-        private System.Windows.Forms.ComboBox comboBox1;
+        private System.Windows.Forms.PictureBox pictureBoxFundoTab;
+        private System.Windows.Forms.ComboBox cbBFundoTab;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.ComboBox comboBox2;
-        private System.Windows.Forms.PictureBox pictureBox2;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.ComboBox cbBSkinPeca;
+        private System.Windows.Forms.PictureBox pictureBoxSkinPeca;
+        private System.Windows.Forms.Button btnSaveConfig;
     }
 }

@@ -8,8 +8,8 @@ namespace engsoft3
 {
     public class PieceObject
     {
-        public int faceA;
-        public int faceB;
+        public int faceA { get; set; }
+        public int faceB { get; set; }
 
         public override bool Equals(Object obj)
         {

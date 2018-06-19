@@ -123,6 +123,7 @@
     <Compile Include="FormSkinManager.Designer.cs">
       <DependentUpon>FormSkinManager.cs</DependentUpon>
     </Compile>
+    <Compile Include="FundoTabuleiroComboBox.cs" />
     <Compile Include="img_fundo_tab.cs">
       <DependentUpon>DominoModel.tt</DependentUpon>
     </Compile>
@@ -146,6 +147,7 @@
     </Compile>
     <Compile Include="RankingObject.cs" />
     <Compile Include="requisicoes_ws\RequisicoesRestWS.cs" />
+    <Compile Include="SkinPecaComboBox.cs" />
     <Compile Include="TileLogic.cs" />
     <Compile Include="TileDataCreator.cs" />
     <Compile Include="TileDataStorage.cs" />

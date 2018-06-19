@@ -26,6 +26,7 @@ namespace engsoft3
             aTimer.Interval = 1000;
             aTimer.Enabled = true;
             this.Text = "Tela Principal - Id: " + idPlayer;
+            FormSkinManager.LoadMe();
         }
 
         // Specify what you want to happen when the Elapsed event is raised.
@@ -103,6 +104,12 @@ namespace engsoft3
         private void FormMainScreen_FormClosing(object sender, FormClosingEventArgs e)
         {
             NewGameRequestManager.Cancel();
+        }
+
+        private void btnChooseSkin_Click(object sender, EventArgs e)
+        {
+            FormSkinManager fsm = new FormSkinManager();
+            fsm.ShowDialog();
         }
     }
 }
