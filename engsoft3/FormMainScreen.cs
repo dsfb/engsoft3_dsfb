@@ -25,6 +25,7 @@ namespace engsoft3
             aTimer.Elapsed += new ElapsedEventHandler(OnTimedEvent);
             aTimer.Interval = 1000;
             aTimer.Enabled = true;
+            this.Text = "Tela Principal - Id: " + idPlayer;
         }
 
         // Specify what you want to happen when the Elapsed event is raised.
