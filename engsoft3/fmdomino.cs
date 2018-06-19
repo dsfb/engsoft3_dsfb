@@ -237,6 +237,7 @@ namespace engsoft3
             aTimer.Interval = 1000;
             aTimer.Enabled = true;
             this.lblStatus.Text = "Andamento!";
+            this.Text = "Jogo de Dominó - Seu ID: " + idPlayer;
         }
 
         private byte[] GetImageContent(int id_cip, int faceA, int faceB)
@@ -572,12 +573,10 @@ namespace engsoft3
                             {
                                 if (esquerdaEqual)
                                 {
-                                    MessageBox.Show("Passando onde eu quero! Equal!");
                                     newLoc.Offset(82, 67);
                                 }
                                 else
                                 {
-                                    MessageBox.Show("Passando onde eu quero! Diferente!");
                                     newLoc.Offset(82, 44);
                                 }
                             }
@@ -585,7 +584,6 @@ namespace engsoft3
                             {
                                 newLoc.Offset(28, 64);
                             }
-                            MessageBox.Show("Mudando esquerdaState para: 1.");
                             esquerdaState = 1;
                             firstEsquerdaState1 = true;
                         }
@@ -624,7 +622,6 @@ namespace engsoft3
 
                         if (newLoc.Y > 75)
                         {
-                            MessageBox.Show("Mudando esquerdaState para: 2.");
                             newLoc.Offset(0, 10);
                             esquerdaState = 2;
                             firstEsquerdaState2 = true;
@@ -656,12 +653,10 @@ namespace engsoft3
                             {
                                 if (esquerdaEqual)
                                 {
-                                    MessageBox.Show("Passando por esquerdaEqual!");
                                     newLoc.Offset(45, 17);
                                 }
                                 else
                                 {
-                                    MessageBox.Show("Passando por not esquerdaEqual!");
                                     newLoc.Offset(img.Width, 0);
                                 }
                             }
@@ -702,7 +697,6 @@ namespace engsoft3
                         {
                             if (direitaEqual)
                             {
-                                MessageBox.Show("Passando apos equal... direita estado 0");
                                 newLoc.Offset(79, 17);
                             }
                             else
@@ -712,7 +706,6 @@ namespace engsoft3
                         }
                         else
                         {
-                            MessageBox.Show("Passando equal direita estado 0...");
                             newLoc.Offset(85, -17);
                         }
 
@@ -762,7 +755,6 @@ namespace engsoft3
                             {
                                 if (firstDireitaState1 == true)
                                 {
-                                    MessageBox.Show("Passando por direitaState 1 ... equal... firstDireitaState1...");
                                     newLoc.Offset(45, 74);
                                 }
                                 else
@@ -838,7 +830,6 @@ namespace engsoft3
                     topBody_right = newLoc.Y;
                 }
                 pb1.Location = newLoc;
-                MessageBox.Show("My Location x is: " + newLoc.X);
             }
 
             Controls.Add(pb1);
