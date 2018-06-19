@@ -9,6 +9,7 @@ using System.Drawing.Drawing2D;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Timers;
 using System.Windows.Forms;
@@ -46,6 +47,12 @@ namespace engsoft3
         private System.Timers.Timer aTimer = new System.Timers.Timer();
         private PieceObject lastPiece;
         private bool firstMessage = true;
+        private PictureBox lastPictureBox;
+        private PieceObject lastPo;
+        private string lastValor;
+        private Boolean running = false;
+
+        delegate void SetControlValueCallback(Control oControl, string propName, object propValue);
 
         // Specify what you want to happen when the Elapsed event is raised.
         private void OnTimedEvent(object source, ElapsedEventArgs e)
@@ -504,10 +511,18 @@ namespace engsoft3
             }
         }
 
-        private void DrawTile(PieceObject po, string valor)
+        private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
         {
+            PieceObject po = lastPo;
+            string valor = lastValor;
             bool equal = po.faceA == po.faceB;
             PictureBox pb1 = new PictureBox();
+
+            if (po.faceA == -1 || po.faceB == -1)
+            {
+                return;
+            }
+
             byte[] dadosImg = this.GetImageContent(this.cip.ID, po.faceA, po.faceB);
             MemoryStream ms = new MemoryStream(dadosImg);
             Image img = Image.FromStream(ms);
@@ -832,11 +847,39 @@ namespace engsoft3
                 pb1.Location = newLoc;
             }
 
-            Controls.Add(pb1);
+            this.lastPictureBox = pb1;
+        }
+
+        private void backgroundWorker1_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            if (lastPictureBox != null)
+            {
+                Controls.Add(lastPictureBox);
+            }
+            this.running = false;
+        }
+
+        private void DrawTile(PieceObject po, string valor)
+        {
+            lastPo = po;
+            lastValor = valor;
+            while (this.running)
+            {
+                Thread.Sleep(10);
+            }
+            backgroundWorker1.RunWorkerAsync();
+            this.running = true;
         }
 
         private void fmdomino_Load(object sender, EventArgs e)
         {
+            MemoryStream ms = new MemoryStream(FormSkinManager.GetSavedImgFundoTab());
+            this.BackgroundImage = Image.FromStream(ms);
+
+            int id_cjto_img_pecas = FormSkinManager.GetIdConjImgPecas();
+
+            PictureBox.CheckForIllegalCrossThreadCalls = false;
+
             //Inicia com as peças iniciais + peça central.
             /*Os códigos de botões novos terão de ser criados aqui
             Pensei que criar peças novas usando as funções 
@@ -851,6 +894,7 @@ namespace engsoft3
             using (var db = new dominoeng3Entities())
             {
                 var query = from u in db.conj_img_pecas
+                            where u.ID == id_cjto_img_pecas
                             select u;
 
                 if (query.Count() > 0)
@@ -860,8 +904,18 @@ namespace engsoft3
                 }
                 else
                 {
-                    MessageBox.Show("Opa! Não existe um conjunto de imagens carregado! O jogo não irá prosseguir!");
-                    return;
+                    query = from u in db.conj_img_pecas
+                            select u;
+
+                    if (query.Count() > 0)
+                    {
+                        cip = query.FirstOrDefault();
+
+                    }
+                    else
+                    {
+                        MessageBox.Show("Erro! Nenhum conjunto de imagem foi carregado!");
+                    }
                 }
 
                 var query2 = from u in db.img_fundo_tab

@@ -12,6 +12,7 @@ namespace engsoft3
     {
         private System.Threading.Timer timer;
         private int idPlayer;
+        private string idGame;
         private Boolean doIt = true;
         private Boolean playIt = true;
         private static NewGameRequestManager instance = null;
@@ -50,6 +51,11 @@ namespace engsoft3
                     this.disableChecking();
                 }
             }
+        }
+
+        public void enablePlaying()
+        {
+            this.playIt = true;
         }
 
         public void enableChecking()
@@ -145,15 +151,15 @@ namespace engsoft3
 
                     if (query.Count() > 0)
                     {
+                        partida p = query.First();
+
+                        idGame = Convert.ToString(p.ID);
+                        string idPlayer1 = Convert.ToString(p.player1);
+                        string idPlayer2 = Convert.ToString(p.player2);
+
                         DialogResult res = MessageBox.Show("O jogo pode ser iniciado agora, mesmo?", "Confirmation", MessageBoxButtons.OKCancel, MessageBoxIcon.Information);
                         if (res == DialogResult.OK)
                         {
-                            partida p = query.First();
-
-                            string idGame = Convert.ToString(p.ID);
-                            string idPlayer1 = Convert.ToString(p.player1);
-                            string idPlayer2 = Convert.ToString(p.player2);
-
                             p.estado = p.estado + 1;
                             db.SaveChanges();
 
@@ -194,9 +200,7 @@ namespace engsoft3
                         }
                         else if (res == DialogResult.Cancel)
                         {
-                            partida p = query.First();
-                            p.estado = 7;
-                            db.SaveChanges();
+                            this.playIt = false;
                             MessageBox.Show("Você decidiu não jogar agora!");
                         }
                     }

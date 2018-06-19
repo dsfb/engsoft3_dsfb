@@ -17,6 +17,11 @@ namespace engsoft3
         private static byte[] saved_img_fundo_tab = null;
         private static int id_conj_img_pecas = -1;
 
+        public static int GetIdConjImgPecas()
+        {
+            return id_conj_img_pecas;
+        }
+
         public static byte[] GetSavedImgFundoTab()
         {
             if (saved_img_fundo_tab == null)
@@ -48,6 +53,15 @@ namespace engsoft3
                 {
                     var first = query.First();
                     FormSkinManager.selected_img_fundo_tab = first.conteudo_arquivo;
+                }
+
+                var query_pecas = from u in db.conj_img_pecas
+                                  select u;
+
+                if (query_pecas.Count() > 0)
+                {
+                    var first = query_pecas.First();
+                    id_conj_img_pecas = first.ID;
                 }
             }
         }
@@ -178,6 +192,7 @@ namespace engsoft3
             {
                 id_conj_img_pecas = Convert.ToInt32(cbBSkinPeca.SelectedValue);
                 MessageBox.Show("Skins salvas com sucesso!");
+                this.Close();
             }
             catch (Exception)
             {

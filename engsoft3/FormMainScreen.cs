@@ -111,5 +111,10 @@ namespace engsoft3
             FormSkinManager fsm = new FormSkinManager();
             fsm.ShowDialog();
         }
+
+        private void btnStartGameNow_Click(object sender, EventArgs e)
+        {
+            NewGameRequestManager.GetInstance(Convert.ToInt32(idPlayer)).enablePlaying();
+        }
     }
 }

@@ -33,6 +33,7 @@
             this.btnPlayAcceptedGame = new System.Windows.Forms.Button();
             this.btnChooseSkin = new System.Windows.Forms.Button();
             this.btnSeeRequest = new System.Windows.Forms.Button();
+            this.btnStartGameNow = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // btnCreateGame
@@ -85,11 +86,22 @@
             this.btnSeeRequest.UseVisualStyleBackColor = true;
             this.btnSeeRequest.Click += new System.EventHandler(this.btnSeeRequest_Click);
             // 
+            // btnStartGameNow
+            // 
+            this.btnStartGameNow.Location = new System.Drawing.Point(376, 237);
+            this.btnStartGameNow.Name = "btnStartGameNow";
+            this.btnStartGameNow.Size = new System.Drawing.Size(92, 23);
+            this.btnStartGameNow.TabIndex = 5;
+            this.btnStartGameNow.Text = "Iniciar o Jogo!";
+            this.btnStartGameNow.UseVisualStyleBackColor = true;
+            this.btnStartGameNow.Click += new System.EventHandler(this.btnStartGameNow_Click);
+            // 
             // FormMainScreen
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(718, 308);
+            this.Controls.Add(this.btnStartGameNow);
             this.Controls.Add(this.btnSeeRequest);
             this.Controls.Add(this.btnChooseSkin);
             this.Controls.Add(this.btnPlayAcceptedGame);
@@ -109,5 +121,6 @@
         private System.Windows.Forms.Button btnPlayAcceptedGame;
         private System.Windows.Forms.Button btnChooseSkin;
         private System.Windows.Forms.Button btnSeeRequest;
+        private System.Windows.Forms.Button btnStartGameNow;
     }
 }
