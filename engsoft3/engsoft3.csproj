@@ -144,6 +144,7 @@
     <Compile Include="ranking.cs">
       <DependentUpon>DominoModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="RankingObject.cs" />
     <Compile Include="requisicoes_ws\RequisicoesRestWS.cs" />
     <Compile Include="TileLogic.cs" />
     <Compile Include="TileDataCreator.cs" />
