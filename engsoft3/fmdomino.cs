@@ -47,10 +47,6 @@ namespace engsoft3
         private System.Timers.Timer aTimer = new System.Timers.Timer();
         private PieceObject lastPiece;
         private bool firstMessage = true;
-        private PictureBox lastPictureBox;
-        private PieceObject lastPo;
-        private string lastValor;
-        private Boolean running = false;
 
         delegate void SetControlValueCallback(Control oControl, string propName, object propValue);
 
@@ -511,10 +507,8 @@ namespace engsoft3
             }
         }
 
-        private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
+        private void DrawTileSubRoutine(PieceObject po, string valor)
         {
-            PieceObject po = lastPo;
-            string valor = lastValor;
             bool equal = po.faceA == po.faceB;
             PictureBox pb1 = new PictureBox();
 
@@ -847,28 +841,22 @@ namespace engsoft3
                 pb1.Location = newLoc;
             }
 
-            this.lastPictureBox = pb1;
-        }
-
-        private void backgroundWorker1_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
-        {
-            if (lastPictureBox != null)
-            {
-                Controls.Add(lastPictureBox);
-            }
-            this.running = false;
+            Controls.Add(pb1);
         }
 
         private void DrawTile(PieceObject po, string valor)
         {
-            lastPo = po;
-            lastValor = valor;
-            while (this.running)
+            if (this.InvokeRequired)
             {
-                Thread.Sleep(10);
+                this.BeginInvoke((MethodInvoker)delegate ()
+                {
+                    this.DrawTileSubRoutine(po, valor);
+                });
             }
-            backgroundWorker1.RunWorkerAsync();
-            this.running = true;
+            else
+            {
+                this.DrawTileSubRoutine(po, valor);
+            }
         }
 
         private void fmdomino_Load(object sender, EventArgs e)
